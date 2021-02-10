@@ -1,0 +1,6 @@
+from rest_api.app import app
+
+@app.route('/')
+def hello_world():
+    return 'Hello, World!'
+
