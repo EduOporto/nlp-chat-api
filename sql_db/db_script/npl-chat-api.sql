@@ -19,15 +19,15 @@ USE `nlp_chat_api` ;
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `nlp_chat_api`.`users` (
   `user_id` INT NOT NULL AUTO_INCREMENT,
-  `user_name` BINARY(128) NOT NULL,
-  `un_salt` BINARY(32) NOT NULL,
-  `user_lastname` BINARY(128) NOT NULL,
-  `uln_salt` BINARY(32) NOT NULL,
-  `user_mail` BINARY(128) NOT NULL,
-  `um_salt` BINARY(32) NOT NULL,
+  `user_name` BLOB(256) NOT NULL,
+  `un_salt` BINARY(64) NOT NULL,
+  `user_lastname` BLOB(256) NOT NULL,
+  `uln_salt` BINARY(64) NOT NULL,
+  `user_mail` BLOB(256) NOT NULL,
+  `um_salt` BINARY(64) NOT NULL,
   `user_nick` VARCHAR(45) NOT NULL,
-  `user_pass` BINARY(128) NOT NULL,
-  `up_salt` BINARY(32) NOT NULL,
+  `user_pass` BLOB(256) NOT NULL,
+  `up_salt` BINARY(64) NOT NULL,
   PRIMARY KEY (`user_id`),
   UNIQUE INDEX `user_nick_UNIQUE` (`user_nick` ASC) VISIBLE)
 ENGINE = InnoDB;

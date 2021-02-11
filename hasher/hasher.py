@@ -1,5 +1,5 @@
 import os 
-import hashlib
+import hashlib, binascii
 from dotenv import load_dotenv
 load_dotenv()
 
@@ -12,10 +12,10 @@ def pablo_hasher(string, salt=None):
         # Hash the string
         hashed = hashlib.pbkdf2_hmac('sha256', string.encode('utf-8'), salt, 100000, dklen=128)
 
-        return hashed, salt
+        return binascii.hexlify(hashed), binascii.hexlify(salt)
     
     else:
         # Hash the string
         hashed = hashlib.pbkdf2_hmac('sha256', string.encode('utf-8'), salt, 100000, dklen=128)
 
-        return hashed
+        return binascii.hexlify(hashed)
