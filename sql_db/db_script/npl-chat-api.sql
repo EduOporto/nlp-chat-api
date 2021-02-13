@@ -18,7 +18,7 @@ USE `nlp_chat_api` ;
 -- Table `nlp_chat_api`.`users`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `nlp_chat_api`.`users` (
-  `user_id` INT NOT NULL AUTO_INCREMENT,
+  `id` INT NOT NULL AUTO_INCREMENT,
   `user_name` BLOB(256) NOT NULL,
   `un_salt` BINARY(64) NOT NULL,
   `user_lastname` BLOB(256) NOT NULL,
@@ -28,7 +28,7 @@ CREATE TABLE IF NOT EXISTS `nlp_chat_api`.`users` (
   `user_nick` VARCHAR(45) NOT NULL,
   `user_pass` BLOB(256) NOT NULL,
   `up_salt` BINARY(64) NOT NULL,
-  PRIMARY KEY (`user_id`),
+  PRIMARY KEY (`id`),
   UNIQUE INDEX `user_nick_UNIQUE` (`user_nick` ASC) VISIBLE)
 ENGINE = InnoDB;
 
@@ -46,12 +46,12 @@ CREATE TABLE IF NOT EXISTS `nlp_chat_api`.`users_has_chats` (
   INDEX `fk_users_has_chats_users2_idx` (`user_2_id` ASC) VISIBLE,
   CONSTRAINT `fk_users_has_chats_users1`
     FOREIGN KEY (`user_1_id`)
-    REFERENCES `nlp_chat_api`.`users` (`user_id`)
+    REFERENCES `nlp_chat_api`.`users` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_users_has_chats_users2`
     FOREIGN KEY (`user_2_id`)
-    REFERENCES `nlp_chat_api`.`users` (`user_id`)
+    REFERENCES `nlp_chat_api`.`users` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
@@ -115,52 +115,52 @@ CREATE TABLE IF NOT EXISTS `nlp_chat_api`.`users_has_groups` (
   INDEX `fk_users_has_groups_users10_idx` (`user_9_id` ASC) VISIBLE,
   CONSTRAINT `fk_users_has_groups_users1`
     FOREIGN KEY (`user_id_admin`)
-    REFERENCES `nlp_chat_api`.`users` (`user_id`)
+    REFERENCES `nlp_chat_api`.`users` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_users_has_groups_users2`
     FOREIGN KEY (`user_1_id`)
-    REFERENCES `nlp_chat_api`.`users` (`user_id`)
+    REFERENCES `nlp_chat_api`.`users` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_users_has_groups_users3`
     FOREIGN KEY (`user_2_id`)
-    REFERENCES `nlp_chat_api`.`users` (`user_id`)
+    REFERENCES `nlp_chat_api`.`users` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_users_has_groups_users4`
     FOREIGN KEY (`user_3_id`)
-    REFERENCES `nlp_chat_api`.`users` (`user_id`)
+    REFERENCES `nlp_chat_api`.`users` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_users_has_groups_users5`
     FOREIGN KEY (`user_4_id`)
-    REFERENCES `nlp_chat_api`.`users` (`user_id`)
+    REFERENCES `nlp_chat_api`.`users` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_users_has_groups_users6`
     FOREIGN KEY (`user_5_id`)
-    REFERENCES `nlp_chat_api`.`users` (`user_id`)
+    REFERENCES `nlp_chat_api`.`users` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_users_has_groups_users7`
     FOREIGN KEY (`user_6_id`)
-    REFERENCES `nlp_chat_api`.`users` (`user_id`)
+    REFERENCES `nlp_chat_api`.`users` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_users_has_groups_users8`
     FOREIGN KEY (`user_7_id`)
-    REFERENCES `nlp_chat_api`.`users` (`user_id`)
+    REFERENCES `nlp_chat_api`.`users` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_users_has_groups_users9`
     FOREIGN KEY (`user_8_id`)
-    REFERENCES `nlp_chat_api`.`users` (`user_id`)
+    REFERENCES `nlp_chat_api`.`users` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_users_has_groups_users10`
     FOREIGN KEY (`user_9_id`)
-    REFERENCES `nlp_chat_api`.`users` (`user_id`)
+    REFERENCES `nlp_chat_api`.`users` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;

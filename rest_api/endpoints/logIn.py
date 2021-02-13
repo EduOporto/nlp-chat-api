@@ -1,23 +1,28 @@
 from rest_api.app import *
 from flask import request
 from hasher.hasher import pablo_hasher
-import binascii, pandas as pd
+import binascii
+from flask_login import login_user
 
 @app.route('/login')
 def logIn():
-    user_nick = str(request.args.get('user_nick'))
-    user_pass = str(request.args.get('user_pass'))
+    user_nick_ = str(request.args.get('user_nick'))
+    user_pass_ = str(request.args.get('user_pass'))
 
-    logIn_query = f"""SELECT user_pass, up_salt FROM nlp_chat_api.users
-                        WHERE user_nick = '{user_nick}'"""
+    get_user = User.query.filter_by(user_nick=user_nick_).first()
 
-    result = pd.read_sql(logIn_query, engine_connector())
+    if get_user:
 
-    db_pass = result.user_pass[0]
-    db_pass_salt = binascii.unhexlify(result.up_salt[0])
+        db_pass = get_user.user_pass
+        db_pass_salt = binascii.unhexlify(get_user.up_salt)
 
-    if pablo_hasher(user_pass, db_pass_salt) == db_pass:
-        return f'{user_nick} succesfully loggd in!'
+        if pablo_hasher(user_pass_, db_pass_salt) == db_pass:
+            
+            login_user(get_user)
+
+            return f'{user_nick_} succesfully logged in!'
+        else:
+            return f'{user_nick_} not logged in, wrong password!'
 
     else:
-        return f'{user_nick} not logged in. Either user or password is incorrect'
+        return f'{user_nick_} not logged in, wrong username!'

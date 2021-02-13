@@ -8,9 +8,9 @@ $ flask run
 
 # SignIn
 
-http://127.0.0.1:5000/signin?user_name=admin_n3&user_lastname=admin_ln3&user_mail=eduardoportoalonso@gmail.com&user_nick=admin3&user_pass=admin3
+http://127.0.0.1:5000/signin?user_name=admin_n2&user_lastname=admin_ln2&user_mail=admin_2@gmail.com&user_nick=admin_2&user_pass=admin_2
 
 # LogIn
 
-http://127.0.0.1:5000/login?user_nick=admin3&user_pass=admin3
+http://127.0.0.1:5000/login?user_nick=admin&user_pass=admin
 

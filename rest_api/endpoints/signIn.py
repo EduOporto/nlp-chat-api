@@ -5,20 +5,24 @@ from hasher.hasher import pablo_hasher
 @app.route('/signin')
 def signIn():
 
-    user_name, un_salt = pablo_hasher(str(request.args.get('user_name')))
-    user_lastname, uln_salt = pablo_hasher(str(request.args.get('user_lastname')))
-    user_mail, um_salt = pablo_hasher(str(request.args.get('user_mail')))
-    user_nick = request.args.get('user_nick')
-    user_pass, up_salt = pablo_hasher(str(request.args.get('user_pass')))
+    user_name_, un_salt_ = pablo_hasher(str(request.args.get('user_name')))
+    user_lastname_, uln_salt_ = pablo_hasher(str(request.args.get('user_lastname')))
+    user_mail_, um_salt_ = pablo_hasher(str(request.args.get('user_mail')))
+    user_nick_ = request.args.get('user_nick')
+    user_pass_, up_salt_ = pablo_hasher(str(request.args.get('user_pass')))
 
-    signIn_query = """INSERT INTO nlp_chat_api.users 
-                    (user_name, un_salt, user_lastname, uln_salt, user_mail, um_salt, user_nick, user_pass, up_salt)
-                  VALUES
-                    (%s, %s, %s, %s, %s, %s, %s, %s, %s)"""
+    new_user = User(user_name=user_name_, 
+                    un_salt=un_salt_, 
+                    user_lastname=user_lastname_, 
+                    uln_salt=uln_salt_, 
+                    user_mail=user_mail_, 
+                    um_salt=um_salt_, 
+                    user_nick=user_nick_, 
+                    user_pass=user_pass_, 
+                    up_salt=up_salt_)
 
-    values = (user_name, un_salt, user_lastname, uln_salt, user_mail, um_salt, user_nick, user_pass, up_salt)
+    db.session.add(new_user)
+    db.session.commit()
 
-    engine_connector().execute(signIn_query, values)
-
-    return 'Succesfully Signed In'
+    return f"User '{user_nick_}' succesfully signed in"
 
