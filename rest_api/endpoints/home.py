@@ -1,8 +1,11 @@
-from rest_api.app import app
-from flask_login import login_required
+from rest_api.app import *
 
-@app.route('/')
+@app.route('/home', methods=['POST', 'GET'])
 @login_required
-def hello_world():
-    return 'Hello, World!'
+def home():
+    if request.method == 'POST':
+        
+        return redirect(url_for('logOut'))
+
+    return render_template('home.html')
 

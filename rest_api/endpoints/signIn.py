@@ -1,28 +1,32 @@
 from rest_api.app import *
-from flask import request
-from hasher.hasher import pablo_hasher
+from datetime import datetime
 
-@app.route('/signin')
+@app.route('/signin', methods=['POST', 'GET'])
 def signIn():
+    if request.method == 'POST':
+        name_, n_salt_ = pablo_hasher(str(request.form.get('name')))
+        lastname_, ln_salt_ = pablo_hasher(str(request.form.get('lastname')))
+        email_, em_salt_ = pablo_hasher(str(request.form.get('email')))
+        username_ = request.form.get('username')
+        password_, p_salt_ = pablo_hasher(str(request.form.get('password')))
 
-    user_name_, un_salt_ = pablo_hasher(str(request.args.get('user_name')))
-    user_lastname_, uln_salt_ = pablo_hasher(str(request.args.get('user_lastname')))
-    user_mail_, um_salt_ = pablo_hasher(str(request.args.get('user_mail')))
-    user_nick_ = request.args.get('user_nick')
-    user_pass_, up_salt_ = pablo_hasher(str(request.args.get('user_pass')))
+        new_user = User(
+            name=name_, 
+            n_salt=n_salt_, 
+            lastname=lastname_, 
+            ln_salt=ln_salt_, 
+            email=email_, 
+            em_salt=em_salt_, 
+            username=username_, 
+            password=password_, 
+            p_salt=p_salt_,
+            confirmed_at=datetime.now()
+        )
+        
+        db.session.add(new_user)
+        db.session.commit()
 
-    new_user = User(user_name=user_name_, 
-                    un_salt=un_salt_, 
-                    user_lastname=user_lastname_, 
-                    uln_salt=uln_salt_, 
-                    user_mail=user_mail_, 
-                    um_salt=um_salt_, 
-                    user_nick=user_nick_, 
-                    user_pass=user_pass_, 
-                    up_salt=up_salt_)
+        return redirect(url_for('login'))
 
-    db.session.add(new_user)
-    db.session.commit()
-
-    return f"User '{user_nick_}' succesfully signed in"
+    return render_template('register.html')
 
