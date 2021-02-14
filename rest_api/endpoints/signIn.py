@@ -1,5 +1,4 @@
 from rest_api.app import *
-from datetime import datetime
 
 @app.route('/signin', methods=['POST', 'GET'])
 def signIn():
@@ -20,13 +19,14 @@ def signIn():
             username=username_, 
             password=password_, 
             p_salt=p_salt_,
-            confirmed_at=datetime.now()
+            confirmed_at=datetime.now(),
+            login_count=0
         )
         
         db.session.add(new_user)
         db.session.commit()
 
-        return redirect(url_for('login'))
+        return redirect(url_for('logIn'))
 
     return render_template('register.html')
 

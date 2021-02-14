@@ -1,6 +1,6 @@
 
 # Creating the APP and session
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, flash
 import os
 from dotenv import load_dotenv
 load_dotenv()
@@ -27,4 +27,7 @@ def load_user(user_id):
 from hasher.hasher import pablo_hasher
 
 # Import models
-from rest_api.models.models import User
+from rest_api.models.models import User, Chat, Group, Cmessage, Gmessage
+
+# Import datetime
+from datetime import datetime

@@ -18,12 +18,16 @@ def logIn():
                 
                 login_user(get_user)
 
-                #return f'{user_nick_} succesfully logged in!'
-                return redirect(url_for('home'))
+                # Update user's last login and login count
+                get_user.last_login_at = datetime.now()
+                get_user.login_count = get_user.login_count + 1
+                db.session.commit()
+
+                return redirect(url_for('home', username=get_user.username))
             else:
-                return f'{username_} not logged in, wrong password!'
+                flash(f'{username_} not logged in, wrong password!')
 
         else:
-            return f'{username_} not logged in, wrong username!'
+            flash(f'{username_} not logged in, wrong username!')
 
     return render_template('login.html')

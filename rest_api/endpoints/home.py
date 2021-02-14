@@ -1,8 +1,9 @@
 from rest_api.app import *
 
-@app.route('/home', methods=['POST', 'GET'])
+@app.route('/home/<username>', methods=['POST', 'GET'])
 @login_required
-def home():
+def home(username):
+
     if request.method == 'POST':
         
         return redirect(url_for('logOut'))
