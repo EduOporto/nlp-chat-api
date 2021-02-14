@@ -1,5 +1,4 @@
 from rest_api.app import *
-import binascii
 
 @app.route('/login', methods=['POST', 'GET'])
 def logIn():
@@ -11,10 +10,7 @@ def logIn():
 
         if get_user:
 
-            db_pass = get_user.password
-            db_pass_salt = binascii.unhexlify(get_user.p_salt)
-
-            if pablo_hasher(password_, db_pass_salt) == db_pass:
+            if get_user.password_check(password_):
                 
                 login_user(get_user)
 

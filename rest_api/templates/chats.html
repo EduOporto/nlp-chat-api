@@ -28,5 +28,10 @@
     <h1>{{ current_user.username }}'s chats</h1>
     <br>
 </div>
+<select name=chats method="GET" action="/">
+    {% for chat in chats %}
+    <option value= "{{chat}}" SELECTED>{{chat}}</option>"
+    {% endfor %}
+</select>
 
 </html>

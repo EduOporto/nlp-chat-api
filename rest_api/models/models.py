@@ -1,5 +1,6 @@
 from rest_api.app import *
 from flask_login import UserMixin
+import binascii
 
 class User(UserMixin, db.Model):
 
@@ -20,7 +21,13 @@ class User(UserMixin, db.Model):
     login_count = db.Column(db.Integer)
 
     def __repr__(self):
-        return '<User %r>' % self.user_name
+        return '<User %r>' % self.username
+
+    def password_check(self, password):
+        return pablo_hasher(password, binascii.unhexlify(self.p_salt)) == self.password
+    
+    def email_check(self, email):
+        return pablo_hasher(email, binascii.unhexlify(self.em_salt)) == self.email
 
 class Chat(db.Model):
 
@@ -32,6 +39,13 @@ class Chat(db.Model):
 
     def __repr__(self):
         return '<Chat %r>' % self.id
+
+    def other_user(self, user_caller):
+        
+        if self.user_a_id == user_caller:
+            return self.user_b_id
+        
+        return self.user_a_id
 
 class Group(db.Model):
 

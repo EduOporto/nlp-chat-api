@@ -29,5 +29,6 @@ from hasher.hasher import pablo_hasher
 # Import models
 from rest_api.models.models import User, Chat, Group, Cmessage, Gmessage
 
-# Import datetime
+# Import miscellaneous
 from datetime import datetime
+from sqlalchemy import or_
