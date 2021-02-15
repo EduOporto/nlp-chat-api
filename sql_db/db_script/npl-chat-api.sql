@@ -46,6 +46,7 @@ CREATE TABLE IF NOT EXISTS `nlp_chat_api`.`users_has_chats` (
   PRIMARY KEY (`id`),
   INDEX `fk_users_has_chats_users1_idx` (`user_a_id` ASC) VISIBLE,
   INDEX `fk_users_has_chats_users2_idx` (`user_b_id` ASC) VISIBLE,
+  INDEX `fk_users_has_chats_chat_messages1_idx` (`user_a_id` ASC, `user_b_id` ASC) VISIBLE,
   CONSTRAINT `fk_users_has_chats_users1`
     FOREIGN KEY (`user_a_id`)
     REFERENCES `nlp_chat_api`.`users` (`id`)
@@ -54,6 +55,11 @@ CREATE TABLE IF NOT EXISTS `nlp_chat_api`.`users_has_chats` (
   CONSTRAINT `fk_users_has_chats_users2`
     FOREIGN KEY (`user_b_id`)
     REFERENCES `nlp_chat_api`.`users` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_users_has_chats_chat_messages1`
+    FOREIGN KEY (`user_a_id` , `user_b_id`)
+    REFERENCES `nlp_chat_api`.`chat_messages` (`user_id` , `user_id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
@@ -69,21 +75,10 @@ CREATE TABLE IF NOT EXISTS `nlp_chat_api`.`chat_messages` (
   `message` VARCHAR(45) NOT NULL,
   `message_date` DATETIME NOT NULL,
   INDEX `fk_chat_messages_users_has_chats1_idx` (`chat_id` ASC) VISIBLE,
-  INDEX `fk_chat_messages_users_has_chats2_idx` (`user_id` ASC) VISIBLE,
   PRIMARY KEY (`id`),
   CONSTRAINT `fk_chat_messages_users_has_chats1`
     FOREIGN KEY (`chat_id`)
     REFERENCES `nlp_chat_api`.`users_has_chats` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_chat_messages_users_has_chats2`
-    FOREIGN KEY (`user_id`)
-    REFERENCES `nlp_chat_api`.`users_has_chats` (`user_a_id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_chat_messages_users_has_chats3`
-    FOREIGN KEY (`user_id`)
-    REFERENCES `nlp_chat_api`.`users_has_chats` (`user_b_id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;

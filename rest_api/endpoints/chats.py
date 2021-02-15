@@ -4,12 +4,28 @@ from rest_api.app import *
 @login_required
 def chats(username):
 
-    get_chats = Chat.query.filter(or_(
-        Chat.user_a_id == current_user.id, 
-        Chat.user_b_id == current_user.id)
-        ).all()
+    # Get list of users for create a new chat
+    rest_users = current_user.rest_users()
 
-    other_user = [e.other_user(current_user.id) for e in get_chats]
-    other_user_nicks = [User.query.filter_by(id=e).first().username for e in other_user]
+    # Get existing chats
+    get_chats = current_user.get_chats(Chat)
 
-    return render_template('chats.html', chats=other_user_nicks)
+    return render_template('chats.html', chats=get_chats, rest_users=rest_users, User=User, Chat=Chat)
+
+
+@app.route('/home/<username>/chats/<chat_e>', methods=['POST', 'GET'])
+@login_required
+def chat(username, chat_e):
+
+    # Get list of users for create a new chat
+    rest_users = current_user.rest_users()
+
+    # Get existing chats
+    get_chats = current_user.get_chats(Chat)
+
+
+
+    return render_template('chat.html', chats=get_chats, rest_users=rest_users, User=User, Chat=Chat)
+
+    
+

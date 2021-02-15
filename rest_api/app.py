@@ -27,8 +27,10 @@ def load_user(user_id):
 from hasher.hasher import pablo_hasher
 
 # Import models
-from rest_api.models.models import User, Chat, Group, Cmessage, Gmessage
+from rest_api.models.user import User
+from rest_api.models.chat import Chat
+from rest_api.models.group import Group
+from rest_api.models.messages import Cmessage, Gmessage
 
 # Import miscellaneous
 from datetime import datetime
-from sqlalchemy import or_
