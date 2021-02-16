@@ -31,11 +31,18 @@ class User(UserMixin, db.Model):
         return pablo_hasher(email, binascii.unhexlify(self.em_salt)) == self.email
 
     def get_chats(self, Chat):
-        return Chat.query.filter(or_(
-                        Chat.user_a_id == self.id, 
-                        Chat.user_b_id == self.id)
-                        ).all()
+        return Chat.query.filter(or_(Chat.user_a_id == self.id, Chat.user_b_id == self.id)).all()
+
+    def chat_exists(self, receiver, Chat):
+        chats = self.get_chats(Chat) 
+        chats_dict = {e.other_user(self.id, User).username : e.id for e in chats}
+
+        try:
+            chat_id = chats_dict[receiver.username]
+        except:
+            chat_id = False
+        
+        return chat_id
 
     def rest_users(self):
-        
         return  User.query.filter(User.username != self.username).all()

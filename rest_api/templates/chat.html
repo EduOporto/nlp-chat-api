@@ -38,8 +38,8 @@
     }
 
     .main {
-        margin-left: 160px; /* Same as the width of the sidenav */
-        font-size: 28px; /* Increased text to enable scrolling */
+        margin-left: 200px; /* Same as the width of the sidenav */
+        font-size: 15px; /* Increased text to enable scrolling */
         padding: 0px 10px;
     }
 
@@ -47,6 +47,60 @@
         .sidenav {padding-top: 15px;}
         .sidenav a {font-size: 18px;}
     }
+    </style>
+
+  <style>
+    .dropbtn {
+      background-color: #4CAF50;
+      color: white;
+      padding: 16px;
+      font-size: 16px;
+      border: none;
+      cursor: pointer;
+    }
+    
+    .dropbtn:hover, .dropbtn:focus {
+      background-color: #3e8e41;
+    }
+    
+    #myInput {
+      box-sizing: border-box;
+      background-image: url('searchicon.png');
+      background-position: 14px 12px;
+      background-repeat: no-repeat;
+      font-size: 16px;
+      padding: 14px 20px 12px 45px;
+      border: none;
+      border-bottom: 1px solid #ddd;
+    }
+    
+    #myInput:focus {outline: 3px solid #ddd;}
+    
+    .dropdown {
+      position: relative;
+      display: inline-block;
+    }
+    
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      background-color: #f6f6f6;
+      min-width: 230px;
+      overflow: auto;
+      border: 1px solid #ddd;
+      z-index: 1;
+    }
+    
+    .dropdown-content a {
+      color: black;
+      padding: 12px 16px;
+      text-decoration: none;
+      display: block;
+    }
+    
+    .dropdown a:hover {background-color: #ddd;}
+    
+    .show {display: block;}
     </style>
 
 </head>
@@ -68,14 +122,71 @@
 </nav>
 
 <div class="sidenav">
-  <a href="#about">New Chat</a>
-  <a href="#about">Chats</a>
+  <h3>New Chat</h3>
+  <div class="dropdown">
+    <button onclick="myFunction()" class="dropbtn">Select User</button>
+    <div id="myDropdown" class="dropdown-content">
+      <input type="text" placeholder="Search.." id="myInput" onkeyup="filterFunction()">
+      {% for user in rest_users %}
+      <a href="{{ url_for('new_chat', username=current_user.username, new_chat_user=user.id) }}">{{user.username}}</a>
+      {% endfor %}
+    </div>
+  </div>
+  <script>
+    /* When the user clicks on the button,
+    toggle between hiding and showing the dropdown content */
+    function myFunction() {
+      document.getElementById("myDropdown").classList.toggle("show");
+    }
+    
+    function filterFunction() {
+      var input, filter, ul, li, a, i;
+      input = document.getElementById("myInput");
+      filter = input.value.toUpperCase();
+      div = document.getElementById("myDropdown");
+      a = div.getElementsByTagName("a");
+      for (i = 0; i < a.length; i++) {
+        txtValue = a[i].textContent || a[i].innerText;
+        if (txtValue.toUpperCase().indexOf(filter) > -1) {
+          a[i].style.display = "";
+        } else {
+          a[i].style.display = "none";
+        }
+      }
+    }
+    </script>
+  <h3>Chats</h3>
   {% for chat in chats %}
-  <a href="{{ url_for('chat', username=current_user.username, chat_e=chat) }}">{{chat.other_user(current_user.id, User)}}</a>
+  <a href="{{ url_for('chat', username=current_user.username, chat_e=chat.id) }}">{{chat.other_user(current_user.id, User).username}}</a>
   {% endfor %}
 </div>
 
-<!-- Page content -->
+<!-- Receiver -->
+<div class="main">
+<h2>{{ receiver.username }}</h2>
+<br>
+<!-- Messages -->
+{% for message in messages %}
+  {% if message.user.id == current_user.id %}
+  <p style="text-align:right">{{ message.message }}</p>
+  <p style="text-align:right">{{ message.message_date }}</p><br>
+  {% endif %}
+  {% if message.user.id != current_user.id %}
+  <p>{{ message.message }}</p>
+  <p>{{ message.message_date }}</p><br>
+  {% endif %}
+{% endfor %}
+<br>
+<!-- Text box -->
+<form method="POST">
+<label for="message"></label>
+<textarea placeholder="Type a message to {{receiver.username}}..." id="message" name="message" rows="2" cols="148"></textarea>
+<br><br>
+<input type="submit" value="Send">
+<br><br>
+
+</form>
+</div>
 
 
 </body>

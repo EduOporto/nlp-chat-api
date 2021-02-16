@@ -23,7 +23,7 @@ class Gmessage(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     group_id = db.Column(db.Integer, db.ForeignKey('users_has_groups.id'), nullable=False)
-    group = db.relationship('Chat', foreign_keys=[group_id])
+    group = db.relationship('Group', foreign_keys=[group_id])
 
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
     user = db.relationship('User', foreign_keys=[user_id])    

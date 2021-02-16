@@ -11,6 +11,8 @@ class Chat(db.Model):
     user_b_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
     user_b = db.relationship('User', foreign_keys=[user_b_id])
 
+    create_at = db.Column(db.DateTime, nullable=False)
+
     def __repr__(self):
         return '<Chat %r>' % self.id
 
@@ -21,5 +23,4 @@ class Chat(db.Model):
         else:
             id_ = self.user_a_id
 
-        username = User.query.filter_by(id=id_).first().username
-        return username
+        return User.query.filter_by(id=id_).first()
