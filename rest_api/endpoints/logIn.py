@@ -1,6 +1,6 @@
 from rest_api.app import *
 
-@app.route('/login', methods=['POST', 'GET'])
+@app.route('/', methods=['POST', 'GET'])
 def logIn():
     if request.method == 'POST':
         username_ = str(request.form.get('Username'))
