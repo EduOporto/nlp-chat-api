@@ -1,22 +1,5 @@
 from rest_api.app import *
-
-def chats_rest_users(current_user):
-    # Get list of users for create a new chat
-    rest_users = current_user.rest_users()
-
-    # Get existing chats
-    get_chats = current_user.get_chats(Chat)
-
-    return rest_users, get_chats
-
-def post_message(chat, user, message):
-    new_message = Cmessage(
-                    chat=chat,
-                    user=current_user,
-                    message=message,
-                    message_date=datetime.now())
-    db.session.add(new_message)
-    db.session.commit()
+from rest_api.rest_api_functions.chats_functions import chats_rest_users, post_message, create_chat
 
 @app.route('/home/<username>/chats', methods=['POST', 'GET'])
 @login_required
@@ -49,16 +32,13 @@ def new_chat(username, new_chat_user):
 
     if request.method == 'POST':
 
-        # Create chat
-        create_chat = Chat(user_a=current_user, user_b=receiver, create_at=datetime.now())
-        db.session.add(create_chat)
-        db.session.commit()
+        # Create and get the chat
+        chat = create_chat(current_user, receiver)
 
-        # Get chat
-        chat = Chat.query.filter_by(user_a=current_user, user_b=receiver).first()
-
-        # Create message
+        # Get the message
         message = str(request.form.get('message'))
+
+        # Post message in the new chat
         post_message(chat, current_user, message)
 
         return redirect(url_for('chat', username=current_user.username, chat_e=chat.id))
@@ -88,8 +68,10 @@ def chat(username, chat_e):
     # Send message
     if request.method == 'POST':
         
-        # Create message
+        # Get the message
         message = str(request.form.get('message'))
+
+        # Post the message in the chat
         post_message(chat, current_user, message)
 
         return redirect(url_for('chat', username=current_user.username, chat_e=chat.id))
@@ -101,5 +83,3 @@ def chat(username, chat_e):
                             messages=messages,
                             User=User, 
                             Chat=Chat)
-    
-

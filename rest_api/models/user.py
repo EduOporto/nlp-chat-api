@@ -31,7 +31,20 @@ class User(UserMixin, db.Model):
         return pablo_hasher(email, binascii.unhexlify(self.em_salt)) == self.email
 
     def get_chats(self, Chat):
-        return Chat.query.filter(or_(Chat.user_a_id == self.id, Chat.user_b_id == self.id)).all()
+        return Chat.query.filter(or_(Chat.user_a == self, Chat.user_b == self)).all()
+
+    def get_groups(self, Group):
+        return Group.query.filter(or_(
+                                    Group.group_admin == self,
+                                    Group.user_b == self,
+                                    Group.user_c == self,
+                                    Group.user_d == self,
+                                    Group.user_e == self,
+                                    Group.user_f == self,
+                                    Group.user_g == self,
+                                    Group.user_h == self,
+                                    Group.user_i == self,
+                                    Group.user_j == self)).all()
 
     def chat_exists(self, receiver, Chat):
         chats = self.get_chats(Chat) 
