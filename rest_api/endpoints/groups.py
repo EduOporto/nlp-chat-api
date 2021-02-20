@@ -33,9 +33,12 @@ def group(username, group):
 
     # Get list of users for new chat and existing groups
     rest_users, get_groups = groups_rest_users(current_user)
-
+    
     # Get group
     group_ = Group.query.filter_by(id=group).first()
+
+    # Get the users that are not in the actual chat, in order to add them
+    rest_users_add = [u for u in rest_users if u not in group_.get_users()]
 
     # Get messages
     messages = Gmessage.query.filter_by(group=group_).all()
@@ -53,7 +56,8 @@ def group(username, group):
 
     return render_template('group.html',
                             groups=get_groups,
-                            rest_users=rest_users,
+                            rest_users_new=rest_users,
+                            rest_users_add=rest_users_add,
                             group=group_,
                             messages=messages,
                             User=User,

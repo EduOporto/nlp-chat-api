@@ -41,3 +41,10 @@ class Group(db.Model):
 
     def __repr__(self):
         return '<Group %r>' % self.group_name
+
+    def get_users(self):
+
+        places = [self.group_admin, self.user_b, self.user_c, self.user_d, self.user_e, self.user_f, self.user_g, self.user_h, self.user_i, self.user_j]
+
+        return [e for e in places if e != None]
+

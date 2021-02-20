@@ -6,6 +6,7 @@
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"/>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.8.3/chosen.min.css"/>
 <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/style.css') }}"/>
+
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.8.3/chosen.jquery.min.js"></script>
@@ -17,25 +18,7 @@
   <a class="active" href="{{ url_for('home', username=current_user.username) }}">{{ current_user.username }}</a>
   <a href="{{ url_for('chats', username=current_user.username) }}">Chats</a>
   <a href="{{ url_for('groups', username=current_user.username) }}">Groups</a>
-  <a class="name_top">{{ group.group_name }}</a>
-  <div class="dropdown">
-    <button class="dropbtn">Add User 
-      <i class="fa fa-caret-down"></i>
-    </button>
-    <div class="dropdown-content">
-      <form method="POST">
-        <label for="newgroup_users" class="sidenav_label">Select the users:</label><br>
-          <select id="newgroup_users" data-placeholder="Choose users..." multiple class="chosen-select" name="Chosen Users">
-          {% for user in rest_users %}
-            <option value=""></option>
-            <option>{{user.username}}</option>
-          {% endfor %}
-          </select>
-          <br><br>
-        <input type="submit" value="Add" class="input_newg">
-      </form>
-    </div>
-  </div>
+  <a class="name_top" onclick="toggleNav()">{{ group.group_name }}</a>
 <a href="javascript:void(0);" style="font-size:15px;" class="icon" onclick="myFunction()">&#9776;</a>
 <div class="navbar-right"><a href="{{ url_for('logOut')}}"><span class="glyphicon glyphicon-log-in"></span> Logout</a></div>
 </div>
@@ -48,7 +31,7 @@
       <input type="text" id="group_name" name="Group Name" class="group_name" maxlength="20"><br><br>
     <label for="newgroup_users" class="sidenav_label">Select the users:</label><br>
       <select id="newgroup_users" data-placeholder="Choose users..." multiple class="chosen-select" name="Chosen Users">
-      {% for user in rest_users %}
+      {% for user in rest_users_new %}
         <option value=""></option>
         <option>{{user.username}}</option>
       {% endfor %}
@@ -62,6 +45,39 @@
     <a href="{{ url_for('group', username=current_user.username, group=group.id) }}" class=sidenav_label>{{group.group_name}}</a>
     {% endfor %}
 </div> 
+
+<!-- Sidenav InGroup -->
+
+<div id="mySidenav" class="sidenav-group">
+  <h3 class="section-ingroup">Users</h3>
+    {% for user in group.get_users() %}
+    <a href="" class=sidenav_label>{{user.username}}</a>
+    {% endfor %}
+  <h3 class="section-ingroup">Add User</h3>
+    <form method="POST">
+      <label for="newgroup_users" class="sidenav-label-ingroup">Select users:</label><br>
+      <select id="newgroup_users" data-placeholder="Choose users..." multiple class="chosen-select" name="Chosen Users">
+        {% for user in rest_users_add %}
+          <option value=""></option>
+          <option>{{user.username}}</option>
+        {% endfor %}
+      </select>
+      <br><br>
+      <input type="submit" value="Add" class="input_newg">
+    </form>
+  <h3 class="section-ingroup">Remove User</h3>
+    <form method="POST">
+      <label for="newgroup_users" class="sidenav-label-ingroup">Select users:</label><br>
+      <select id="newgroup_users" data-placeholder="Choose users..." multiple class="chosen-select" name="Chosen Users">
+        {% for user in group.get_users() %}
+          <option value=""></option>
+          <option>{{user.username}}</option>
+        {% endfor %}
+      </select>
+      <br><br>
+      <input type="submit" value="Remove" class="input_newg">
+    </form>
+</div>
 
 <!-- Messages -->
 <div class="main">
@@ -129,6 +145,27 @@ function toBottom() {
 $(document).ready(function(){
   $(".chosen-select").chosen({ max_selected_options: 9 });
 })
+
+/* Chosen sidenav */ 
+$(document).ready(function(){
+  $(".chosen-select").chosen();
+});
+
+/* Chosen Nothing Found sidenav */
+$(".chosen-select").chosen({
+  no_results_text: "Oops, nothing found!"
+})
+
+/* Sidenav InGroup */
+function toggleNav() {
+  var element = document.getElementById("mySidenav");
+  if (element.style.width == "200px") {
+      element.style.width = "0px";
+  } else {
+      element.style.width = "200px";
+  }
+}
+
 </script>
 
 </body>
