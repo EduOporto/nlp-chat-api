@@ -32,5 +32,8 @@ from rest_api.models.chat import Chat
 from rest_api.models.group import Group
 from rest_api.models.messages import Cmessage, Gmessage
 
+# Import forms
+from rest_api.forms.forms import *
+
 # Import miscellaneous
 from datetime import datetime

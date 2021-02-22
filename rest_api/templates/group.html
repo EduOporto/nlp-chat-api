@@ -27,17 +27,15 @@
 <div class="sidenav">
   <h3 class="section">New Group</h3>
   <form method="POST">
+    {{ forms.new_group.csrf_token }}
     <label for="group_name" class="sidenav_label">Name of the group:</label><br>
-      <input type="text" id="group_name" name="Group Name" class="group_name" maxlength="20"><br><br>
+      {{ forms.new_group.group_name }}
+      <br>
     <label for="newgroup_users" class="sidenav_label">Select the users:</label><br>
-      <select id="newgroup_users" data-placeholder="Choose users..." multiple class="chosen-select" name="Chosen Users">
-      {% for user in rest_users_new %}
-        <option value=""></option>
-        <option>{{user.username}}</option>
-      {% endfor %}
-      </select>
+      {{ forms.new_group.users(rows=3, multiple=True) }}
       <br><br>
-    <input type="submit" value="Create Group" class="input_newg">
+      {{ forms.new_group.create }}
+    <!-- <input type="submit" value="Create Group" class="input_newg"> -->
   </form>
 
   <h3 class="section">Groups</h3>
@@ -53,30 +51,24 @@
     {% for user in group.get_users() %}
     <a href="" class=sidenav_label>{{user.username}}</a>
     {% endfor %}
+
   <h3 class="section-ingroup">Add User</h3>
-    <form method="POST">
-      <label for="newgroup_users" class="sidenav-label-ingroup">Select users:</label><br>
-      <select id="newgroup_users" data-placeholder="Choose users..." multiple class="chosen-select" name="Chosen Users">
-        {% for user in rest_users_add %}
-          <option value=""></option>
-          <option>{{user.username}}</option>
-        {% endfor %}
-      </select>
+  <form method="POST">
+    {{ forms.new_user.csrf_token }}
+    <label for="newgroup_users" class="sidenav-label-ingroup">Select users:</label><br>
+      {{ forms.new_user.new_user(rows=3, multiple=True) }}
       <br><br>
-      <input type="submit" value="Add" class="input_newg">
-    </form>
+      {{ forms.new_user.add }}      
+  </form>
+
   <h3 class="section-ingroup">Remove User</h3>
-    <form method="POST">
-      <label for="newgroup_users" class="sidenav-label-ingroup">Select users:</label><br>
-      <select id="newgroup_users" data-placeholder="Choose users..." multiple class="chosen-select" name="Chosen Users">
-        {% for user in group.get_users() %}
-          <option value=""></option>
-          <option>{{user.username}}</option>
-        {% endfor %}
-      </select>
+  <form method="POST">
+    {{ forms.remove_user.csrf_token }}
+    <label for="newgroup_users" class="sidenav-label-ingroup">Select users:</label><br>
+      {{ forms.remove_user.remove_user(rows=3, multiple=True) }}
       <br><br>
-      <input type="submit" value="Remove" class="input_newg">
-    </form>
+      {{ forms.remove_user.remove }}      
+  </form>
 </div>
 
 <!-- Messages -->
@@ -98,14 +90,8 @@
 <div class="footer">
   <form method="POST">
     <section class="flexbox">
-      <div class="stretch">
-          <br>
-          <textarea class="textinput" placeholder="Type a message to {{group.group_name}}..." id="message" name="message"></textarea>
-      </div>
-      <div class="normal">
-          <br>
-          <input type="submit" value="Send" style="float: right;" class="send">
-      </div>
+    {{ forms.new_message.message }}
+    {{ forms.new_message.send }}
     </section>
   </form>
 </div>

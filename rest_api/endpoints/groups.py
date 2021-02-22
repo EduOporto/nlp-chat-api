@@ -9,50 +9,101 @@ def groups(username):
     # Get list of users for new chat and existing groups
     rest_users, get_groups = groups_rest_users(current_user)
 
-    if request.method == 'POST':
-        new_group_name = str(request.form.get('Group Name'))
-        new_group_users = str(request.form.getlist('Chosen Users'))
+    # New Group Form
+    new_group = NewGroup()
+    new_group.users.choices = [(u.id, u.username) for u in rest_users]
 
-        # Create the new group
-        create_group(current_user, new_group_name, new_group_users)
+    if new_group.create.data:
 
-        # Get the new chat
-        group = Group.query.filter_by(group_name=new_group_name).first()
+        new_group_name = new_group.group_name.data
+        new_group_users = new_group.users.data
 
-        return redirect(url_for('group', username=current_user.username, group=group.id))
+        # Create the group and get it
+        created_group = create_group(current_user, new_group_name, new_group_users)
+        
+        return redirect(url_for('group', username=current_user.username, group=created_group.id))
+
+    forms = {'new_group':new_group}
 
     return render_template('groups.html',
                             groups=get_groups,
                             rest_users=rest_users,
                             User=User,
-                            Group=Group)
+                            Group=Group,
+                            forms=forms)
 
 @app.route('/home/<username>/groups/<group>', methods=['POST', 'GET'])
 @login_required
 def group(username, group):
 
+    ## PAGE CONTENT ##
+    
     # Get list of users for new chat and existing groups
     rest_users, get_groups = groups_rest_users(current_user)
     
     # Get group
     group_ = Group.query.filter_by(id=group).first()
 
-    # Get the users that are not in the actual chat, in order to add them
-    rest_users_add = [u for u in rest_users if u not in group_.get_users()]
-
     # Get messages
     messages = Gmessage.query.filter_by(group=group_).all()
 
-    # Send message
-    if request.method == 'POST':
+    ## FORMS ##
+
+    # New Message Form
+    new_message = NewMessage()
+    
+    # Add New User Form
+    rest_users_add = [(u, u.username) for u in rest_users if u not in group_.get_users()] # Get the users that are not in the actual chat, in order to add them
+    new_user = AddUser()
+    new_user.new_user.choices = rest_users_add
+
+    # Remove User Form
+    remove_user = RemoveUser()
+    remove_user.remove_user.choices = [(u, u.username) for u in group_.get_users()]
+
+    # New Group Form
+    new_group = NewGroup()
+    new_group.users.choices = [(u.id, u.username) for u in rest_users]
+
+    # Forms dict compilation
+    forms = {'new_group':new_group, 'new_user':new_user, 'new_message':new_message, 'remove_user':remove_user}
+
+    ## CHECK FORMS ##
+
+    # New Message
+    if new_message.send.data:
         
-        # Get the message
-        message = str(request.form.get('message'))
+        message = new_message.message.data
 
         # Post the message in the chat
         post_message(group_, current_user, message)
 
         return redirect(url_for('group', username=current_user.username, group=group_.id))
+
+    # Add User
+    elif new_user.add.data:
+        
+        users_to_add = new_user.new_user.data
+
+
+
+        return redirect(url_for('group', username=current_user.username, group=group_.id))
+
+    # Remove User
+    elif remove_user.remove.data:
+
+        return 'User Removed'
+
+    # Create New Group
+    elif new_group.create.data:
+
+        new_group_name = new_group.group_name.data
+        new_group_users = new_group.users.data
+
+        # Create the group and get it
+        created_group = create_group(current_user, new_group_name, new_group_users)
+        
+        return redirect(url_for('group', username=current_user.username, group=created_group.id))
 
     return render_template('group.html',
                             groups=get_groups,
@@ -61,4 +112,5 @@ def group(username, group):
                             group=group_,
                             messages=messages,
                             User=User,
-                            Group=Group)
+                            Group=Group,
+                            forms=forms)

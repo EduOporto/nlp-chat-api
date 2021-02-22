@@ -12,7 +12,7 @@ def groups_rest_users(current_user):
 def create_group(current_user, name, users):
 
     # Transform usernames to classes and select the place each user will occupy
-    users_classes = [User.query.filter_by(username=e).first() for e in users]
+    users_classes = [User.query.filter_by(id=int(e)).first() for e in users]
 
     places = ['user_b', 'user_c', 'user_d', 'user_e', 'user_f', 'user_g', 'user_h', 'user_i', 'user_j']
 
@@ -28,6 +28,11 @@ def create_group(current_user, name, users):
     db.session.add(new_group)
     db.session.commit()
 
+    # Get the created group
+    created_group = Group.query.filter_by(group_name=name).first()
+
+    return created_group
+
 def post_message(group, user, message):
     new_message = Gmessage(
                     group=group,
@@ -36,3 +41,10 @@ def post_message(group, user, message):
                     message_date=datetime.now())
     db.session.add(new_message)
     db.session.commit()
+
+def add_users(group, users):
+
+    users_classes = [User.query.filter_by(id=int(e)).first() for e in users]
+    places = group.get_empties()
+
+    

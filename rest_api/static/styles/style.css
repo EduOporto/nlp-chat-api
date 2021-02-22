@@ -277,9 +277,6 @@ body {margin:0;font-family:Arial}
 .flexbox { display: flex; }
 .flexbox .stretch { flex: 1; }
 .flexbox .normal { flex: 0; margin: 0 0 0 1rem; }
-.flexbox div input { 
-    padding: .5em 1em; 
-    width: 100%;}
     
 .textinput {
   font-family:Arial;
@@ -290,6 +287,7 @@ body {margin:0;font-family:Arial}
   outline: none;
   resize: none;
   border: 1px solid #f0f0f0;
+  margin-top: 20px;
 }
 
 .footer {
@@ -306,8 +304,11 @@ body {margin:0;font-family:Arial}
 .send {
   background-color: #4CAF50;
   color: white;
-  padding: 16px;
+  padding: 0px 16px;
   font-size: 16px;
   border: none;
   cursor: pointer;
+  margin-top: 20px;
+  margin-left: 10px;
+  height: 50px;
 }
