@@ -19,6 +19,9 @@ def chats(username):
 @login_required
 def new_chat(username, new_chat_user): 
 
+    # Get list of users for new chat and existing chats
+    rest_users, get_chats = chats_rest_users(current_user)
+
     # Get receiver user and its chats
     receiver = User.query.filter_by(id=new_chat_user).first()
 
@@ -27,17 +30,23 @@ def new_chat(username, new_chat_user):
     if chat_id:
         return redirect(url_for('chat', username=current_user.username, chat_e=chat_id))
 
-    # Get list of users for new chat and existing chats
-    rest_users, get_chats = chats_rest_users(current_user)
+    ## FORMS ##
 
-    if request.method == 'POST':
+    # New Message Form
+    new_message = NewMessage()
+
+    # Forms dict compilation
+    forms = {'new_message':new_message}
+
+    ## CHECK FORMS ##
+
+    # New Message
+    if new_message.send.data:
 
         # Create and get the chat
         chat = create_chat(current_user, receiver)
-
         # Get the message
-        message = str(request.form.get('message'))
-
+        message = new_message.message.data
         # Post message in the new chat
         post_message(chat, current_user, message)
 
@@ -49,7 +58,8 @@ def new_chat(username, new_chat_user):
                             receiver=receiver,
                             messages=[],
                             User=User, 
-                            Chat=Chat)
+                            Chat=Chat,
+                            forms=forms)
 
 
 @app.route('/home/<username>/chats/<chat_e>', methods=['POST', 'GET'])
@@ -65,12 +75,21 @@ def chat(username, chat_e):
     # Get messages
     messages = Cmessage.query.filter_by(chat=chat).all()
 
-    # Send message
-    if request.method == 'POST':
+    ## FORMS ##
+
+    # New Message Form
+    new_message = NewMessage()
+
+    # Forms dict compilation
+    forms = {'new_message':new_message}
+
+    ## CHECK FORMS ##
+
+    # New Message
+    if new_message.send.data:
         
         # Get the message
-        message = str(request.form.get('message'))
-
+        message = new_message.message.data
         # Post the message in the chat
         post_message(chat, current_user, message)
 
@@ -82,4 +101,5 @@ def chat(username, chat_e):
                             receiver=chat.other_user(current_user.id, User),
                             messages=messages,
                             User=User, 
-                            Chat=Chat)
+                            Chat=Chat,
+                            forms=forms)

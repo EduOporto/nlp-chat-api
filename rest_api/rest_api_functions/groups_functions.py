@@ -47,4 +47,21 @@ def add_users(group, users):
     users_classes = [User.query.filter_by(id=int(e)).first() for e in users]
     places = group.get_empties()
 
-    
+    kwargs = dict(zip(places[:len(users)], users_classes))
+
+    group.update(**kwargs)
+
+def remove_users(group, users):
+
+    users_classes = [User.query.filter_by(id=int(e)).first() for e in users]
+    users_places = [group.user_place(u) for u in users_classes]
+
+    kwargs = dict(zip(users_places, [None] * len(users)))
+
+    group.update(**kwargs)
+
+def exit_group(group, user):
+
+    place = group.user_place(user)
+
+    group.update(**{place:None})

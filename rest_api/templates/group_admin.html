@@ -56,8 +56,22 @@
     <a href="" class=sidenav_label>{{user.username}}</a>
     {% endfor %}
 
+  <h3 class="section-ingroup">Add User</h3>
   <form method="POST" novalidate>
-    {{ forms.exit_.exit_ }}
+    {{ forms.new_user.csrf_token }}
+    <label for="newgroup_users" class="sidenav-label-ingroup">Select users:</label><br>
+      {{ forms.new_user.new_user(rows=3, multiple=True) }}
+      <br><br>
+      {{ forms.new_user.add }}      
+  </form>
+
+  <h3 class="section-ingroup">Remove User</h3>
+  <form method="POST" novalidate>
+    {{ forms.remove_user.csrf_token }}
+    <label for="newgroup_users" class="sidenav-label-ingroup">Select users:</label><br>
+      {{ forms.remove_user.remove_user(rows=3, multiple=True) }}
+      <br><br>
+      {{ forms.remove_user.remove }}      
   </form>
 </div>
 

@@ -46,6 +46,20 @@ class Group(db.Model):
         places = [self.group_admin, self.user_b, self.user_c, self.user_d, self.user_e, self.user_f, self.user_g, self.user_h, self.user_i, self.user_j]
         return [e for e in places if e != None]
 
+    def user_place(self, user):
+        places = [
+            (self.group_admin, 'group_admin'),
+            (self.user_b, 'user_b'),
+            (self.user_c, 'user_c'),
+            (self.user_d, 'user_d'),
+            (self.user_e, 'user_e'),
+            (self.user_f, 'user_f'),
+            (self.user_g, 'user_g'),
+            (self.user_h, 'user_h'),
+            (self.user_i, 'user_i'),
+            (self.user_j, 'user_j')]
+        return [e[1] for e in places if e[0] == user][0]
+
     def get_empties(self):
         places = [
             (self.user_b, 'user_b'),
@@ -58,4 +72,10 @@ class Group(db.Model):
             (self.user_i, 'user_i'),
             (self.user_j, 'user_j')]
         return [e[1] for e in places if e[0] == None]
+
+    def update(self, **kwargs):
+        for key, value in kwargs.items():
+            setattr(self, key, value)
+
+        db.session.commit()
 

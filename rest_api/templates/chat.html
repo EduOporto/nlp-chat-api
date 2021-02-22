@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-<title>{{ current_user.username }}</title>
+<title>{{ receiver.username }} - Chat</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"/>
@@ -57,16 +57,10 @@
 
 <!-- Text box -->
 <div class="footer">
-  <form method="POST">
+  <form method="POST" novalidate>
     <section class="flexbox">
-      <div class="stretch">
-          <br>
-          <textarea class="textinput" placeholder="Type a message to {{receiver.username}}..." id="message" name="message"></textarea>
-      </div>
-      <div class="normal">
-          <br>
-          <input type="submit" value="Send" style="float: right;" class="send">
-      </div>
+      {{ forms.new_message.message }}
+      {{ forms.new_message.send }}
     </section>
   </form>
 </div>
