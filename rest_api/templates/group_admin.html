@@ -26,7 +26,7 @@
 <!-- Sidenav -->
 <div class="sidenav">
   <h3 class="section">New Group</h3>
-  <form method="POST" novalidate>
+  <form method="POST">
     {{ forms.new_group.csrf_token }}
     <label for="group_name" class="sidenav_label">Name of the group:</label><br>
       {{ forms.new_group.group_name }}
@@ -57,7 +57,7 @@
     {% endfor %}
 
   <h3 class="section-ingroup">Add User</h3>
-  <form method="POST" novalidate>
+  <form method="POST">
     {{ forms.new_user.csrf_token }}
     <label for="newgroup_users" class="sidenav-label-ingroup">Select users:</label><br>
       {{ forms.new_user.new_user(rows=3, multiple=True) }}
@@ -66,7 +66,7 @@
   </form>
 
   <h3 class="section-ingroup">Remove User</h3>
-  <form method="POST" novalidate>
+  <form method="POST">
     {{ forms.remove_user.csrf_token }}
     <label for="newgroup_users" class="sidenav-label-ingroup">Select users:</label><br>
       {{ forms.remove_user.remove_user(rows=3, multiple=True) }}
@@ -84,6 +84,7 @@
     <p style="text-align:right">{{ message.message_date }}</p><br>
     {% endif %}
     {% if message.user.id != current_user.id %}
+    <p>{{ message.user.username }}</p>
     <p>{{ message.message }}</p>
     <p>{{ message.message_date }}</p><br>
     {% endif %}
@@ -92,7 +93,7 @@
 
 <!-- Text box -->
 <div class="footer">
-  <form method="POST" novalidate>
+  <form method="POST">
     <section class="flexbox">
     {{ forms.new_message.message }}
     {{ forms.new_message.send }}

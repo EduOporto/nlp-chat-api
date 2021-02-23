@@ -8,11 +8,11 @@ class NewGroup(FlaskForm):
     group_name = StringField(
         'group_name',
         render_kw={'class':'group_name'}, 
-        validators=[InputRequired('Group needs a name!')])
+        validators=[InputRequired(message='Group needs a name!')])
     users = SelectMultipleField(
         'users_selected',
         widget=ChosenSelect(multiple=True, options={'width': '180px', 'height': '30px', 'padding-left': '20px'}),
-        validators=[InputRequired('Select at least one user')])
+        validators=[InputRequired(message='Select at least one user')])
     create = SubmitField(
         'Create',
         render_kw={'class':'input_newg'})
@@ -21,7 +21,7 @@ class AddUser(FlaskForm):
     new_user = SelectMultipleField(
         'users_selected', 
         widget=ChosenSelect(multiple=True, options={'width': '180px', 'height': '30px', 'padding-left': '20px'}),
-        validators=[InputRequired('Select at least one user')])
+        validators=[InputRequired(message='Select at least one user')])
     add = SubmitField(
         'Add',
         render_kw={'class':'input_newg'})
@@ -38,7 +38,7 @@ class RemoveUser(FlaskForm):
     remove_user = SelectMultipleField(
         'users_selected', 
         widget=ChosenSelect(multiple=True, options={'width': '180px', 'height': '30px', 'padding-left': '20px'}),
-        validators=[InputRequired('Select at least one user')])
+        validators=[InputRequired(message='Select at least one user')])
     remove = SubmitField(
         'Remove',
         render_kw={'class':'input_newg'})
@@ -50,7 +50,7 @@ class NewMessage(FlaskForm):
         validators=[InputRequired(message='You must write something!')])
     send = SubmitField(
         'Send',
-        render_kw={'class':'send'})
+        render_kw={'class':'send', 'type':'submit'})
 
 class ExitGroup(FlaskForm):
     exit_ = SubmitField(

@@ -25,7 +25,7 @@
 <!-- Sidenav -->
 <div class="sidenav">
   <h3 class="section">New Group</h3>
-  <form method="POST" novalidate>
+  <form method="POST">
     {{ forms.new_group.csrf_token }}
     <label for="group_name" class="sidenav_label">Name of the group:</label><br>
       {{ forms.new_group.group_name }}
