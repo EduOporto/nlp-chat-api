@@ -2,9 +2,13 @@ from rest_api.app import *
 
 @app.route('/', methods=['POST', 'GET'])
 def logIn():
-    if request.method == 'POST':
-        username_ = str(request.form.get('Username'))
-        password_ = str(request.form.get('Password'))
+
+    form = LogIn()
+
+    if form.log_in.data:
+
+        username_ = form.username
+        password_ = form.password
 
         get_user = User.query.filter_by(username=username_).first()
 
@@ -26,4 +30,4 @@ def logIn():
         else:
             flash(f'{username_} not logged in, wrong username!')
 
-    return render_template('login.html')
+    return render_template('login.html', form=form)

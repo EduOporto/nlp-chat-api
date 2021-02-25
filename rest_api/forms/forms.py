@@ -1,8 +1,22 @@
 from flask_wtf import FlaskForm
-from wtforms.fields import StringField, SelectMultipleField, SubmitField, TextAreaField
-from wtforms.validators import InputRequired
+from wtforms.fields import StringField, SelectMultipleField, SubmitField, TextAreaField, PasswordField
+from wtforms.fields.html5 import EmailField
+from wtforms.validators import InputRequired, Email
 from rest_api.forms.chosenselect import ChosenSelect
 
+class SignIn(FlaskForm):
+    name = StringField('name', validators=[InputRequired()])
+    last_name = StringField('last_name', validators=[InputRequired()])
+    email = EmailField('email', validators=[Email()])
+    username = StringField('username', validators=[InputRequired()])
+    password = PasswordField('password', validators=[InputRequired()])
+    password_confirm = PasswordField('password_confirm', validators=[InputRequired()])
+    sign_in = SubmitField('signin')
+
+class LogIn(FlaskForm):
+    username = StringField('username', validators=[InputRequired()])
+    password = PasswordField('password', validators=[InputRequired()])
+    log_in = SubmitField('login')
 
 class NewGroup(FlaskForm):
     group_name = StringField(

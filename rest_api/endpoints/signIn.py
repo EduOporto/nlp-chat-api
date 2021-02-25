@@ -2,12 +2,16 @@ from rest_api.app import *
 
 @app.route('/signin', methods=['POST', 'GET'])
 def signIn():
-    if request.method == 'POST':
-        name_, n_salt_ = pablo_hasher(str(request.form.get('name')))
-        lastname_, ln_salt_ = pablo_hasher(str(request.form.get('lastname')))
-        email_, em_salt_ = pablo_hasher(str(request.form.get('email')))
-        username_ = request.form.get('username')
-        password_, p_salt_ = pablo_hasher(str(request.form.get('password')))
+
+    form = SignIn()
+
+    if form.sign_in.data and form.password == form.password_confirm:
+
+        name_, n_salt_ = pablo_hasher(form.name)
+        lastname_, ln_salt_ = pablo_hasher(form.last_name)
+        email_, em_salt_ = pablo_hasher(form.email)
+        username_ = form.username
+        password_, p_salt_ = pablo_hasher(form.password)
 
         new_user = User(
             name=name_, 
@@ -28,5 +32,5 @@ def signIn():
 
         return redirect(url_for('logIn'))
 
-    return render_template('register.html')
+    return render_template('register.html', form=form)
 

@@ -14,6 +14,12 @@ class Cmessage(db.Model):
     message = db.Column(db.Text, nullable=False)
     message_date = db.Column(db.DateTime, nullable=False)
 
+    # Sentiment data
+    neg_score = db.Column(db.Float, nullable=False)
+    neu_score = db.Column(db.Float, nullable=False)
+    pos_score = db.Column(db.Float, nullable=False)
+    compound = db.Column(db.Float, nullable=False)
+
     def __repr__(self):
         return '<Cmessage %r>' % self.id
 
@@ -30,6 +36,12 @@ class Gmessage(db.Model):
 
     message = db.Column(db.Text, nullable=False)
     message_date = db.Column(db.DateTime, nullable=False)
+
+    # Sentiment data
+    neg_score = db.Column(db.Float, nullable=False)
+    neu_score = db.Column(db.Float, nullable=False)
+    pos_score = db.Column(db.Float, nullable=False)
+    compound = db.Column(db.Float, nullable=False)
 
     def __repr__(self):
         return '<Gmessage %r>' % self.id

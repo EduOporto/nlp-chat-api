@@ -34,11 +34,19 @@ def create_group(current_user, name, users):
     return created_group
 
 def post_message(group, user, message):
+
+    # Message Sentiment analysis
+    sentiment = sia(message)
+
     new_message = Gmessage(
                     group=group,
                     user=user,
                     message=message,
-                    message_date=datetime.now())
+                    message_date=datetime.now(),
+                    neg_score=sentiment['neg'],
+                    neu_score=sentiment['neu'],
+                    pos_score=sentiment['pos'],
+                    compound=sentiment['compound'])
     db.session.add(new_message)
     db.session.commit()
 

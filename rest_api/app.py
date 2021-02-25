@@ -35,5 +35,10 @@ from rest_api.models.messages import Cmessage, Gmessage
 # Import forms
 from rest_api.forms.forms import *
 
+# Import NLTK-Vader Sentiment Analysis and instanciate it 
+from nltk.sentiment.vader import SentimentIntensityAnalyzer
+
+sia = SentimentIntensityAnalyzer()
+
 # Import miscellaneous
 from datetime import datetime
