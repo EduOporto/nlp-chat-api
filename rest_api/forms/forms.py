@@ -1,22 +1,22 @@
 from flask_wtf import FlaskForm
 from wtforms.fields import StringField, SelectMultipleField, SubmitField, TextAreaField, PasswordField
 from wtforms.fields.html5 import EmailField
-from wtforms.validators import InputRequired, Email
+from wtforms.validators import InputRequired, Email, Length, EqualTo
 from rest_api.forms.chosenselect import ChosenSelect
 
 class SignIn(FlaskForm):
     name = StringField('name', validators=[InputRequired()])
     last_name = StringField('last_name', validators=[InputRequired()])
     email = EmailField('email', validators=[Email()])
-    username = StringField('username', validators=[InputRequired()])
+    username = StringField('username', validators=[InputRequired(), Length(min=6, max=20, message=('Username must have a length of 6 to 20 characters'))])
     password = PasswordField('password', validators=[InputRequired()])
-    password_confirm = PasswordField('password_confirm', validators=[InputRequired()])
-    sign_in = SubmitField('signin')
+    password_confirm = PasswordField('password_confirm', validators=[InputRequired(), EqualTo('password', message="Passwords don't match!")])
+    sign_in = SubmitField('Sign In', render_kw={'class':'submit-'})
 
 class LogIn(FlaskForm):
     username = StringField('username', validators=[InputRequired()])
     password = PasswordField('password', validators=[InputRequired()])
-    log_in = SubmitField('login')
+    log_in = SubmitField('Login', render_kw={'class':'submit-'})
 
 class NewGroup(FlaskForm):
     group_name = StringField(

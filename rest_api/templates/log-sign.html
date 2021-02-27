@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<title>NLP Chat</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/style.css') }}"/>
+<link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/log-sign.css') }}"/>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+
+<body style="background-color: #f2f2f2;">
+
+    <button class="w3-bar-item w3-button-first tablink w3-green" onclick="openCity(event,'LogIn')">LogIn</button>
+    <button class="w3-bar-item w3-button tablink" onclick="openCity(event,'SignIn')">SignIn</button>
+    
+    <div id="LogIn" class="log-sign-container city">
+        {% for field, errors in forms.logIn.errors.items() %}
+        {{ ', '.join(errors) }}
+        {% endfor %}
+        <form method="POST" class="login-form">
+            {{ forms.logIn.csrf_token }}
+            <label for="group_name">Username:</label><br>
+            {{ forms.logIn.username }}<br>
+            <label for="group_name">Password:</label><br>
+            {{ forms.logIn.password }}<br>
+            <!-- {{ forms.logIn.log_in }} -->
+            <input type="submit" value="LogIn" class="submit-">
+            <input type="reset" class="submit-" value='Reset'>
+            {% for message in get_flashed_messages() %}
+            <div class="alert-error">{{ message }}</div>
+            {% endfor %}
+        </form>
+    </div>
+    
+    <div id="SignIn" class="log-sign-container city" style="display:none">
+        {% for field, errors in forms.signIn.errors.items() %}
+        {{ ', '.join(errors) }}
+        {% endfor %}
+        <form method="POST" class="login-form">
+            {{ forms.signIn.csrf_token }}
+            <label for="group_name">Name:</label><br>
+            {{ forms.signIn.name }}<br>
+            <label for="group_name">Lastname:</label><br>
+            {{ forms.signIn.last_name }}<br>
+            <label for="group_name">Email:</label><br>
+            {{ forms.signIn.email }}<br>
+            <label for="group_name">Username:</label><br>
+            {{ forms.signIn.username }}<br>
+            <label for="group_name">Password:</label><br>
+            {{ forms.signIn.password }}<br>
+            <label for="group_name">Confirm Password:</label><br>
+            {{ forms.signIn.password_confirm }}<br>
+            <!-- {{ forms.signIn.sign_in }} -->
+            <input type="submit" value="SignIn" class="submit-">
+            <input type="reset" class="submit-" value='Reset'>
+            {% for message in get_flashed_messages() %}
+            <div class="alert-error">{{ message }}</div>
+            {% endfor %}
+        </form>
+    </div>
+      
+<script>
+function openCity(evt, cityName) {
+var i, x, tablinks;
+x = document.getElementsByClassName("city");
+for (i = 0; i < x.length; i++) {
+    x[i].style.display = "none";
+}
+tablinks = document.getElementsByClassName("tablink");
+for (i = 0; i < x.length; i++) {
+    tablinks[i].className = tablinks[i].className.replace(" w3-green", "");
+}
+document.getElementById(cityName).style.display = "block";
+evt.currentTarget.className += " w3-green";
+}
+</script>
+
+</body>
+</html>

@@ -8,5 +8,6 @@ def logOut():
 
     logout_user()
 
-    #return f"User '{current_}' logged out, see you next time!"
-    return redirect(url_for('logIn'))
+    flash(f"User '{current_}' logged out, see you next time!")
+
+    return redirect(url_for('log_sign'))

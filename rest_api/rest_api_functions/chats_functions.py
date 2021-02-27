@@ -12,7 +12,7 @@ def chats_rest_users(current_user):
 def post_message(chat, user, message):
 
     # Message Sentiment analysis
-    sentiment = sia(message)
+    sentiment = sia.polarity_scores(message)
 
     new_message = Cmessage(
                     chat=chat,
