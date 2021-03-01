@@ -80,15 +80,19 @@
   <br>
   {% for message in messages %}
     {% if message.user.id == current_user.id %}
-    <p style="text-align:right">{{ message.message }}</p>
-    <p style="text-align:right">{{ message.message_date }}</p>
-    <p style="text-align:right">{{ message.compound }}</p><br>
+    <div class="message-container-sent">
+      <p style="text-align:right" class="message">{{ message.message }}</p>
+      <p style="text-align:right" class="date">{{ message.message_date.strftime("%Y-%m-%d, %H:%M") }}</p>
+      <!-- <p style="text-align:right">{{ message.compound }}</p> -->
+    </div>
     {% endif %}
     {% if message.user.id != current_user.id %}
-    <p>{{ message.user.username }}</p>
-    <p>{{ message.message }}</p>
-    <p>{{ message.message_date }}</p>
-    <p>{{ message.compound }}</p><br>
+    <div class="message-container-received">
+      <p>{{ message.user.username }}</p>
+      <p class="message">{{ message.message }}</p>
+      <p class="date">{{ message.message_date.strftime("%Y-%m-%d, %H:%M") }}</p>
+      <!-- <p>{{ message.compound }}</p> -->
+    </div>
     {% endif %}
   {% endfor %}
 </div>

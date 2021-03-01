@@ -1,6 +1,6 @@
 from rest_api.app import *
 
-@app.route('/login', methods=['POST', 'GET'])
+@app.route('/', methods=['POST', 'GET'])
 def logIn():
 
     log_in = LogIn()

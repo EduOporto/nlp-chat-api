@@ -45,7 +45,8 @@
                     </ul>
                 {% endif %}
             {{ forms.log_in }}
-            <input type="reset" value='Reset' class="submit-"><br><br>
+            <!-- <input type="submit" value='Reset' class="submit-"/><br><br> -->
+            <!-- <button class="submit-">Clear All</button><br><br> -->
             {% for message in get_flashed_messages() %}
             <div class="isa_success">
                 <i class="fa fa-check"></i>
@@ -54,6 +55,15 @@
             {% endfor %}
         </form>
     </div>
+
+    <script>
+        let btnClear = document.querySelector('button');
+        let inputs = document.querySelectorAll('input');
+
+        btnClear.addEventListener('click', () => {
+            inputs.forEach(input => input.value = '');
+        });
+    </script>
 
 
 </body>
