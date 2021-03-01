@@ -10,4 +10,4 @@ def logOut():
 
     flash(f"User '{current_}' logged out, see you next time!")
 
-    return redirect(url_for('log_sign'))
+    return redirect(url_for('logIn'))

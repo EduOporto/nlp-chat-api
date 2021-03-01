@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<title>NLP Chat</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/style.css') }}"/>
+<link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/log-sign.css') }}"/>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+
+<body style="background-color: #f2f2f2;">
+
+    <form>
+        <input type="submit" value="LogIn" class="w3-bar-item w3-button-first tablink" formaction="{{ url_for('logIn') }}"/> 
+        <input type="submit" value="SignIn" class="w3-bar-item w3-button tablink w3-green" formaction="{{ url_for('signIn') }}"/>
+    </form>
+
+    {% block content %}
+    <div class="log-sign-container city">
+        <form method="POST" class="login-form">
+            {{ forms.csrf_token }}
+            <label for="group_name">Name:</label><br>
+            {{ forms.name }}<br>
+            <label for="group_name">Lastname:</label><br>
+            {{ forms.last_name }}<br>
+            <label for="group_name">Email:</label><br>
+            {{ forms.email }}<br>
+            <label for="group_name">Username:</label><br>
+            {{ forms.username }}<br>
+                {% if forms.username.errors %}
+                    <ul class="errors">
+                        {% for error in forms.username.errors %}
+                        <div class="isa_error">
+                            <i class="fa fa-times-circle"></i>
+                            {{ error }}
+                         </div>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            <label for="group_name">Password:</label><br>
+            {{ forms.password }}<br>
+            <label for="group_name">Confirm Password:</label><br>
+            {{ forms.password_confirm }}<br>
+                {% if forms.password_confirm.errors %}
+                    <ul class="errors">
+                        {% for error in forms.password_confirm.errors %}
+                        <div class="isa_error">
+                            <i class="fa fa-times-circle"></i>
+                            {{ error }}
+                        </div>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            {{ forms.sign_in }}
+            <input type="reset" value='Reset' class="submit-">
+        </form>
+    </div>
+    {% endblock %}
+
+</body>
+</html>

@@ -1,21 +1,62 @@
 from flask_wtf import FlaskForm
 from wtforms.fields import StringField, SelectMultipleField, SubmitField, TextAreaField, PasswordField
 from wtforms.fields.html5 import EmailField
-from wtforms.validators import InputRequired, Email, Length, EqualTo
+from wtforms.validators import InputRequired, Email, Length, EqualTo, NoneOf, AnyOf
 from rest_api.forms.chosenselect import ChosenSelect
+from rest_api.models.user import User
+from rest_api.forms.custom_validators.ValidateLogin import ValidateLogin
 
 class SignIn(FlaskForm):
-    name = StringField('name', validators=[InputRequired()])
-    last_name = StringField('last_name', validators=[InputRequired()])
-    email = EmailField('email', validators=[Email()])
-    username = StringField('username', validators=[InputRequired(), Length(min=6, max=20, message=('Username must have a length of 6 to 20 characters'))])
-    password = PasswordField('password', validators=[InputRequired()])
-    password_confirm = PasswordField('password_confirm', validators=[InputRequired(), EqualTo('password', message="Passwords don't match!")])
-    sign_in = SubmitField('Sign In', render_kw={'class':'submit-'})
+    name = StringField(
+        'name', 
+        validators=[InputRequired()]
+        )
+    last_name = StringField(
+        'last_name', 
+        validators=[InputRequired()]
+        )
+    email = EmailField(
+        'email', 
+        validators=[Email()]
+        )
+    username = StringField(
+        'username', 
+        validators=[
+            InputRequired(), 
+            Length(min=6, max=20, message=('Username must have a length of 6 to 20 characters')),
+            NoneOf(values=[u.username for u in User.query.all()], message=('Username already registered'))
+            ]
+        )
+    password = PasswordField(
+        'password', 
+        validators=[InputRequired()]
+        )
+    password_confirm = PasswordField(
+        'password_confirm', 
+        validators=[
+            InputRequired(), 
+            EqualTo('password', message=("Passwords don't match!"))
+            ]
+        )
+    sign_in = SubmitField(
+        'Sign In', 
+        render_kw={'class':'submit-'}
+        )     
 
 class LogIn(FlaskForm):
-    username = StringField('username', validators=[InputRequired()])
-    password = PasswordField('password', validators=[InputRequired()])
+    username = StringField(
+        'username', 
+        validators=[
+            InputRequired()
+            ]
+        )
+    password = PasswordField(
+        'password', 
+        validators=[
+            InputRequired(),
+            ValidateLogin
+            ]
+        )
     log_in = SubmitField('Login', render_kw={'class':'submit-'})
 
 class NewGroup(FlaskForm):
