@@ -1,5 +1,5 @@
 from rest_api.app import *
-from rest_api.rest_api_functions.chats_functions import chats_rest_users, post_message, create_chat
+from rest_api.rest_api_functions.chats_functions import chats_rest_users, post_message, create_chat, messages_byDate
 
 @app.route('/home/<username>/chats', methods=['POST', 'GET'])
 @login_required
@@ -73,7 +73,7 @@ def chat(username, chat_e):
     chat = Chat.query.filter_by(id=chat_e).first()
 
     # Get messages
-    messages = Cmessage.query.filter_by(chat=chat).all()
+    messages = messages_byDate(chat)
 
     ## FORMS ##
 

@@ -36,3 +36,18 @@ def create_chat(current_user, receiver):
     chat = Chat.query.filter_by(user_a=current_user, user_b=receiver).first()
 
     return chat
+
+def messages_byDate(chat):
+
+    messages = Cmessage.query.filter_by(chat=chat).all()
+
+    by_date = {}
+
+    for message in messages:
+        date = message.message_date.date()
+        if date not in by_date:
+            by_date[date] = [message]
+        else:
+            by_date[date].append(message)
+
+    return by_date

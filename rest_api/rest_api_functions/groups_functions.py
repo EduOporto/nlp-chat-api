@@ -73,3 +73,18 @@ def exit_group(group, user):
     place = group.user_place(user)
 
     group.update(**{place:None})
+
+def messages_byDate(group):
+
+    messages = Gmessage.query.filter_by(group=group).all()
+
+    by_date = {}
+
+    for message in messages:
+        date = message.message_date.date()
+        if date not in by_date:
+            by_date[date] = [message]
+        else:
+            by_date[date].append(message)
+
+    return by_date

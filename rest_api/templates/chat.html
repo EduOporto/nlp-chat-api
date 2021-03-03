@@ -43,21 +43,26 @@
 <!-- Messages -->
 <div class="main">
   <br>
-  {% for message in messages %}
-    {% if message.user.id == current_user.id %}
-    <div class="message-container-sent">
-      <p style="text-align:right" class="message">{{ message.message }}</p>
-      <p style="text-align:right" class="date">{{ message.message_date.strftime("%Y-%m-%d, %H:%M") }}</p>
-      <!-- <p style="text-align:right">{{ message.compound }}</p> -->
+  {% for message_date_ in messages %}
+    <div class="date-container">
+      <p>{{ message_date_.strftime("%Y-%m-%d") }}</p>
     </div>
-    {% endif %}
-    {% if message.user.id != current_user.id %}
-    <div class="message-container-received">
-      <p class="message">{{ message.message }}</p>
-      <p class="date">{{ message.message_date.strftime("%Y-%m-%d, %H:%M") }}</p>
-      <!-- <p>{{ message.compound }}</p> -->
-    </div>
-    {% endif %}
+    {% for message in messages[message_date_] %}  
+      {% if message.user.id == current_user.id %}
+      <div class="message-container sent">
+        <p style="text-align:right" class="message">{{ message.message }}</p>
+        <p style="text-align:right" class="date">{{ message.message_date.strftime("%H:%M") }}</p>
+        <span>{{ message.compound }}</span>
+      </div>
+      {% endif %}
+      {% if message.user.id != current_user.id %}
+      <div class="message-container">
+        <p class="message">{{ message.message }}</p>
+        <p class="date">{{ message.message_date.strftime("%H:%M") }}</p>
+        <span>{{ message.compound }}</span>
+      </div>
+      {% endif %}
+    {% endfor %}
   {% endfor %}
 </div>
 

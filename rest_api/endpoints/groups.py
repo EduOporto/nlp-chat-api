@@ -1,5 +1,5 @@
 from rest_api.app import *
-from rest_api.rest_api_functions.groups_functions import groups_rest_users, create_group, post_message, add_users, remove_users, exit_group
+from rest_api.rest_api_functions.groups_functions import groups_rest_users, create_group, post_message, add_users, remove_users, exit_group, messages_byDate
 
 
 @app.route('/home/<username>/groups', methods=['POST', 'GET'])
@@ -45,7 +45,7 @@ def group_admin(username, group):
     group_ = Group.query.filter_by(id=group).first()
 
     # Get messages
-    messages = Gmessage.query.filter_by(group=group_).all()
+    messages = messages_byDate(group_)
 
     ## FORMS ##
 
@@ -132,7 +132,7 @@ def group(username, group):
     group_ = Group.query.filter_by(id=group).first()
 
     # Get messages
-    messages = Gmessage.query.filter_by(group=group_).all()
+    messages = messages_byDate(group_)
 
     ## FORMS ##
 

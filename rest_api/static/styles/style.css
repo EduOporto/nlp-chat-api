@@ -333,7 +333,7 @@ padding:5px;
   height: auto;
 }
 
-.message-container-sent {
+.message-container {
   padding:5px 12px;
   padding-bottom: 0%;
   margin-bottom: 15px;
@@ -341,23 +341,28 @@ padding:5px;
   position: relative;
   width: fit-content;
   height:fit-content;
-  float: right;
-  right: 10px;
   max-width: 85%;
   box-shadow: 0 0 5px #888;
 }
 
-.message-container-received {
-  padding:5px 12px;
-  padding-bottom: 0%;
-  margin-bottom: 15px;
-  border-radius: 10px;
-  position: relative;
-  width: fit-content;
-  height:fit-content;
-  left: 10px;
-  max-width: 85%;
-  box-shadow: 0 0 5px #888;
+.sent {
+  margin-left: auto;
+}
+
+div.message-container span {
+  display: none; 
+  position: absolute; 
+  bottom: 0; 
+  left: 0; 
+  right: 0; 
+  background: #333; 
+  color: #fff;
+}
+
+div.message-container:hover span {
+  /* background-color:#ee7878; */
+  display: block;
+  cursor: context-menu;
 }
 
 .date {
@@ -367,6 +372,23 @@ padding:5px;
 
 .message {
   margin-bottom: 5px;
+}
+
+.date-container {
+  padding:5px 12px;
+  padding-bottom: 0%;
+  margin-bottom: 15px;
+  border-radius: 5px;
+  position: relative;
+  margin-left: auto;
+  margin-right: auto;
+  width: fit-content;
+  height:fit-content;
+  left: 10px;
+  max-width: 85%;
+  box-shadow: 0 0 5px #888;
+  background-color: #b3ffb5;
+  font-style: italic;
 }
 
 /* Message input */
