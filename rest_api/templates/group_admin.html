@@ -98,6 +98,7 @@
       {% endif %}
       {% if message.user.id != current_user.id %}
       <div class="message-container" onmouseover="render({{ message.compound_color() }})">
+        <p class="group-others-messages">{{ message.user.username }}</p>
         <p class="message">{{ message.message }}</p>
         <p class="date">{{ message.message_date.strftime("%H:%M") }}</p>
         <span class="tooltiptext">
