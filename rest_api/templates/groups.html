@@ -10,6 +10,7 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.8.3/chosen.jquery.min.js"></script>
+<script type=text/javascript src="{{  url_for('static', filename='js/main.js') }}"></script>
        
 <body>
 
@@ -47,44 +48,5 @@
     {% endfor %}
 </div>
 
-<!-- Scripts -->
-<script>
-/* Responsive Top Navigation */
-function myFunction() {
-  var x = document.getElementById("myTopnav");
-  if (x.className === "topnav") {
-    x.className += " responsive";
-  } else {
-    x.className = "topnav";
-  }
-}
-
-/* Sticky Topnav */
-window.onscroll = function() {myFunction()};
-
-var topnav = document.getElementById("myTopnav");
-var sticky = topnav.offsetTop;
-
-function myFunction() {
-  if (window.pageYOffset >= sticky) {
-    topnav.classList.add("sticky")
-  } else {
-    topnav.classList.remove("sticky");
-  }
-}
-
-/* Start the Scroll Bar to the bottom */
-function toBottom() {
-  window.scrollTo(0, document.body.scrollHeight);
-}
-  window.onload=toBottom;
-
-/* Limit the number of the users selected for the new group to 9 */
-$(document).ready(function(){
-  $(".chosen-select").chosen({ max_selected_options: 9 });
-})
-</script>
-
-</div>
 </body>
 </html>

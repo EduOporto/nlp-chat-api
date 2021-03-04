@@ -36,7 +36,7 @@ def create_group(current_user, name, users):
 def post_message(group, user, message):
 
     # Message Sentiment analysis
-    sentiment = sia(message)
+    sentiment = sia.polarity_scores(message)
 
     new_message = Gmessage(
                     group=group,

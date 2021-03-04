@@ -10,6 +10,7 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.8.3/chosen.jquery.min.js"></script>
+<script type=text/javascript src="{{  url_for('static', filename='js/main.js') }}"></script>
 
 <body>
 
@@ -64,22 +65,36 @@
 <!-- Messages -->
 <div class="main">
   <br>
-  {% for message in messages %}
-    {% if message.user.id == current_user.id %}
-    <div class="message-container-sent">
-      <p style="text-align:right" class="message">{{ message.message }}</p>
-      <p style="text-align:right" class="date">{{ message.message_date.strftime("%Y-%m-%d, %H:%M") }}</p>
-      <!-- <p style="text-align:right">{{ message.compound }}</p> -->
+  {% for message_date_ in messages %}
+    <div class="date-container">
+      <p>{{ message_date_.strftime("%Y-%m-%d") }}</p>
     </div>
-    {% endif %}
-    {% if message.user.id != current_user.id %}
-    <div class="message-container-received">
-      <p>{{ message.user.username }}</p>
-      <p class="message">{{ message.message }}</p>
-      <p class="date">{{ message.message_date.strftime("%Y-%m-%d, %H:%M") }}</p>
-      <!-- <p>{{ message.compound }}</p> -->
-    </div>
-    {% endif %}
+    {% for message in messages[message_date_] %}  
+      {% if message.user.id == current_user.id %}
+      <div class="message-container sent" onmouseover="render({{ message.compound_color() }})">
+        <p style="text-align:right" class="message">{{ message.message }}</p>
+        <p style="text-align:right" class="date">{{ message.message_date.strftime("%H:%M") }}</p>
+        <span class="tooltiptext">
+            Compound: {{ message.compound }}
+            Positive: {{ message.pos_score }}
+            Neutral: {{ message.neu_score }}
+            Negative: {{ message.neg_score }}
+        </span>
+      </div>
+      {% endif %}
+      {% if message.user.id != current_user.id %}
+      <div class="message-container" onmouseover="render({{ message.compound_color() }})">
+        <p class="message">{{ message.message }}</p>
+        <p class="date">{{ message.message_date.strftime("%H:%M") }}</p>
+        <span class="tooltiptext">
+            Compound: {{ message.compound }}
+            Positive: {{ message.pos_score }}
+            Neutral: {{ message.neu_score }}
+            Negative: {{ message.neg_score }}
+        </span>        
+      </div>
+      {% endif %}
+    {% endfor %}
   {% endfor %}
 </div>
 
@@ -92,66 +107,6 @@
     </section>
   </form>
 </div>
-
-<!-- Scripts -->
-<script>
-/* Responsive Top Navigation */
-function myFunction() {
-  var x = document.getElementById("myTopnav");
-  if (x.className === "topnav") {
-    x.className += " responsive";
-  } else {
-    x.className = "topnav";
-  }
-}
-
-/* Sticky Topnav */
-window.onscroll = function() {myFunction()};
-
-var topnav = document.getElementById("myTopnav");
-var sticky = topnav.offsetTop;
-
-function myFunction() {
-  if (window.pageYOffset >= sticky) {
-    topnav.classList.add("sticky")
-  } else {
-    topnav.classList.remove("sticky");
-  }
-}
-
-/* Start the Scroll Bar to the bottom */
-function toBottom() {
-  window.scrollTo(0, document.body.scrollHeight);
-}
-  window.onload=toBottom;
-
-$(document).ready(function(){
-  $(".chosen-select").chosen({ max_selected_options: 9 });
-})
-
-/* Chosen sidenav */ 
-$(document).ready(function(){
-  $(".chosen-select").chosen({
-    width:'100%'
-  });
-});
-
-/* Chosen Nothing Found sidenav */
-$(".chosen-select").chosen({
-  no_results_text: "Oops, nothing found!"
-})
-
-/* Sidenav InGroup */
-function toggleNav() {
-  var element = document.getElementById("mySidenav");
-  if (element.style.width == "200px") {
-      element.style.width = "0px";
-  } else {
-      element.style.width = "200px";
-  }
-}
-
-</script>
 
 </body>
 </html>

@@ -1,5 +1,8 @@
 from rest_api.app import *
 
+import numpy as np
+color_mapped = dict(zip(np.around(np.arange(1,-1.01,-.01), 2), np.arange(0,201)))
+
 class Cmessage(db.Model):
 
     __tablename__ = 'chat_messages'
@@ -23,6 +26,10 @@ class Cmessage(db.Model):
     def __repr__(self):
         return '<Cmessage %r>' % self.id
 
+    def compound_color(self):
+
+        return color_mapped[round(self.compound,2)]
+
 class Gmessage(db.Model):
 
     __tablename__ = 'group_messages'
@@ -45,3 +52,7 @@ class Gmessage(db.Model):
 
     def __repr__(self):
         return '<Gmessage %r>' % self.id
+
+    def compound_color(self):
+
+        return color_mapped[round(self.compound,2)]
