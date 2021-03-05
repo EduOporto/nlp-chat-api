@@ -4,7 +4,7 @@ This Flask API I developed serves as backend for a chat service that, besides al
 
 The cool tool of this API is that user is able to check on that analysis with just hovering the mouse over the specific message. This will display a tooltip with the compound data, a value ranging from 1 to -1, depending on how positive or negative is the message, among some other information.
 
-## Security
+## [Security](https://github.com/EduOporto/nlp-chat-api/blob/main/hasher/hasher.py)
 
 The user's data is well protected on this API, as some personal data such as name, lastname, email and, of course, password are hashed in the moment of the registration. 
 
@@ -14,17 +14,17 @@ Both the salt and the hashed data is stored as an hexadecimal string, and the la
 
 ## Data Storage
 
-All the data this API generates (users, chats, groups and messages) is stored on a SQL database through Flask-SQLAlchemy library, which implies the creation of models (classes) for each of the different kinds of registers named before.
+All the data this API generates (users, chats, groups and messages) is stored on a SQL database through [Flask-SQLAlchemy library](https://flask-sqlalchemy.palletsprojects.com/en/2.x/), which implies the creation of [models](https://github.com/EduOporto/nlp-chat-api/tree/main/rest_api/models) (classes) for each of the different kinds of registers named before.
 
 Given the latter, the SQL schema for this particular database has five different tables; and following the Flask-SQLAlchemy principles, each of those tables has its own model (class):
 
- - Table 'users': has a model named 'User', with 13 columns -id (the assigned identification number of the registred user), name (user's name, HASHED), lastname (user's last name, HASHED), email (the user's mail, HASHED), username (has to be unique), password (the HASHED password), confirmed_at (date of the user's registration), last_login_at (date of the user's last login), login_count (counts the number of times the user has been logged in)-.
+ - Table 'users': has a model named ['User'](https://github.com/EduOporto/nlp-chat-api/blob/main/rest_api/models/user.py), with 13 columns -id (the assigned identification number of the registred user), name (user's name, HASHED), lastname (user's last name, HASHED), email (the user's mail, HASHED), username (has to be unique), password (the HASHED password), confirmed_at (date of the user's registration), last_login_at (date of the user's last login), login_count (counts the number of times the user has been logged in)-.
 
  Each of those hashed entries has its own salt stored on its contiguous column.
 
  Besides that, each entry has different functions such as a password and an email checker, in order to help the login or authentication tasks; or two functions to get the opened chats and the groups where the user is included. 
 
- - Table 'users_has_chats': with a model called 'Chat', has four different columns -id (unique assigned identifier of the chat), user_a_id (id of the user that opened the chat and sent the first message), user_b_id (id of the user that received the first message of the chat), create_at (date when the chat had been created)-.
+ - Table 'users_has_chats': with a model called ['Chat'](https://github.com/EduOporto/nlp-chat-api/blob/main/rest_api/models/chat.py), has four different columns -id (unique assigned identifier of the chat), user_a_id (id of the user that opened the chat and sent the first message), user_b_id (id of the user that received the first message of the chat), create_at (date when the chat had been created)-.
 
  In order to avoid the creation of two chats with both users but registered on different columns, I added an extra function ('chat_exists') to the 'User' model.  that is able to check wether the user already has a chat with the other selected user or not. 
  
@@ -34,23 +34,23 @@ Given the latter, the SQL schema for this particular database has five different
  
  The fact that one user is named 'a' and the other 'b' makes no different at all, as both users have the same permissions over the chat. 
 
- - Table 'users_has_groups': with it model, called 'Group'. It has 13 columns -id (unique assigned identifier of the group), group_name (the name of the group), group_admin_id (the user id of the group's creator), user_b/j_id (the ids of the rest of the users), created_at (date of creation) -.
+ - Table 'users_has_groups': with it model, called ['Group'](https://github.com/EduOporto/nlp-chat-api/blob/main/rest_api/models/group.py). It has 13 columns -id (unique assigned identifier of the group), group_name (the name of the group), group_admin_id (the user id of the group's creator), user_b/j_id (the ids of the rest of the users), created_at (date of creation) -.
 
  Each group could has up to 10 users, admin included, who also can delete some users and include new ones.
 
  There are four functions implemented on this class: 'get_users', that gets a list with the objects of all the users included in the group; 'get_empties', that returns the still-available places of the group, 'user_place', that returns the place where a specific user is in the group; and 'update', which deals with the task of assign a place to a new user.
 
- - Tables 'chat_messages' & 'group_messages': with the models 'Cmessage' and 'Gmessage'. Both classes have the same columns -id (unique assigned identifier of the message), chat_id(the id of the chat where the message has been sent), user_id (the id of the sender), message (the string with the message itself), neg_score (the neagtive score of the message, from 0 to 1), neu_score (the neutral score of the message), pos_score (the positive score of the message), compound (the compound valu of the message's sentiment analysis, which ranges from 1 or pòsitive to -1 or negative)-.
+ - Tables 'chat_messages' & 'group_messages': with the models ['Cmessage' and 'Gmessage'](https://github.com/EduOporto/nlp-chat-api/blob/main/rest_api/models/messages.py). Both classes have the same columns -id (unique assigned identifier of the message), chat_id(the id of the chat where the message has been sent), user_id (the id of the sender), message (the string with the message itself), neg_score (the neagtive score of the message, from 0 to 1), neu_score (the neutral score of the message), pos_score (the positive score of the message), compound (the compound valu of the message's sentiment analysis, which ranges from 1 or pòsitive to -1 or negative)-.
 
  Both classes have just a function, 'compound_color', which returns the assigned color for the resultant compound value of the message's sentiment analysis. I will explain this color-gradient below.
 
 ## Forms
 
-Each of the API's froms (Sign and Log In, Group tasks or Messages) have been created and implemented with ['Flask_WTForms'](https://flask-wtf.readthedocs.io/en/stable/) library, which helps out with the validation tasks and the alerts.
+Each of the API's [froms](https://github.com/EduOporto/nlp-chat-api/blob/main/rest_api/forms/forms.py) (Sign and Log In, Group tasks or Messages) have been created and implemented with ['Flask_WTForms'](https://flask-wtf.readthedocs.io/en/stable/) library, which helps out with the validation tasks and the alerts.
 
 ## End Points and templates
 
-This API has 10 different endpoints, rendered in eight different HTML templates. The latter have a really simple design, as this is the first project in which I use HTML, CSS and JS code. As simple the design is, it also makes the the user experience easier.
+This API has 10 different [endpoints](https://github.com/EduOporto/nlp-chat-api/tree/main/rest_api/endpoints), rendered in eight different HTML templates. The latter have a really simple design, as this is the first project in which I use [HTML](https://github.com/EduOporto/nlp-chat-api/tree/main/rest_api/templates), [CSS](https://github.com/EduOporto/nlp-chat-api/tree/main/rest_api/static/styles) and [JavaScript](https://github.com/EduOporto/nlp-chat-api/tree/main/rest_api/static/js) code. As simple the design is, it also makes the the user experience easier.
 
 Besides the login/logout and sign in endpoints, and the user's home page, which are similar to the typical ones that could be seen in any other API, I would like to explain the endpoints for any given chat or group.
 
