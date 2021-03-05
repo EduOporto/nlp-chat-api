@@ -66,6 +66,9 @@ padding:5px;
 .navbar {
   background-color: #333;
   width: 100%;
+  position: fixed;
+  top: 0;
+  z-index:1;
 }
 
 .navbar a {
@@ -100,6 +103,7 @@ padding:5px;
 .name_top {
   background-color: #4CAF50;
   color: #333;
+  cursor: pointer;
 }
 
 .navbar-right {
@@ -269,6 +273,15 @@ padding:5px;
   .sidenav-group a {font-size: 18px;}
 }
 
+.exit_group {
+  background-color: red;
+  color: white;
+  padding: 16px;
+  font-size: 16px;
+  border: none;
+  cursor: pointer;
+}
+
       /* Chat Sidenav */
 
 .dropbtn-chat {
@@ -331,6 +344,7 @@ padding:5px;
   padding: 40px 20px;
   padding-bottom: 100px;
   height: auto;
+  margin-bottom: 15px;
 }
 
 .message-container {
@@ -367,6 +381,7 @@ padding:5px;
   z-index: 1;
   left: 50%;
   margin-left: -60px;
+  font-size: 15px;
 }
 
 .message-container .tooltiptext::after {
@@ -455,13 +470,4 @@ padding:5px;
   margin-top: 20px;
   margin-left: 10px;
   height: 50px;
-}
-
-.exit_group {
-  background-color: red;
-  color: white;
-  padding: 16px;
-  font-size: 16px;
-  border: none;
-  cursor: pointer;
 }

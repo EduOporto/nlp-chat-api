@@ -15,6 +15,6 @@ def db_creator(db_name, db_models=None):
 def db_dropper(db_name):
 
     engine = engine_connector()
-    engine.execute(f"DROP DATABASE IF EXISTS '{db_name}'")
+    engine.execute(f"DROP DATABASE IF EXISTS {db_name}")
 
     return f"{db_name} succesfully dropped"

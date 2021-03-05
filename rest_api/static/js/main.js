@@ -21,18 +21,12 @@ function myFunction() {
       topnav.classList.remove("sticky");
     }
   }
-  
-  /* Start the Scroll Bar to the bottom */
-  function toBottom() {
-    window.scrollTo(0, document.body.scrollHeight);
-  }
-    window.onload=toBottom;
-  
+
+  /* Chosen sidenav */ 
   $(document).ready(function(){
     $(".chosen-select").chosen({ max_selected_options: 9 });
   })
-  
-  /* Chosen sidenav */ 
+
   $(document).ready(function(){
     $(".chosen-select").chosen({
       width:'100%'

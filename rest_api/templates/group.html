@@ -75,10 +75,10 @@
         <p style="text-align:right" class="message">{{ message.message }}</p>
         <p style="text-align:right" class="date">{{ message.message_date.strftime("%H:%M") }}</p>
         <span class="tooltiptext">
-            Compound: {{ message.compound }}
-            Positive: {{ message.pos_score }}
-            Neutral: {{ message.neu_score }}
-            Negative: {{ message.neg_score }}
+            Compound: {{ (message.compound)|round(2) }}
+            Positive: {{ (message.pos_score)|round(2) }}
+            Neutral: {{ (message.neu_score)|round(2) }}
+            Negative: {{ (message.neg_score)|round(2) }}
         </span>
       </div>
       {% endif %}
@@ -88,10 +88,10 @@
         <p class="message">{{ message.message }}</p>
         <p class="date">{{ message.message_date.strftime("%H:%M") }}</p>
         <span class="tooltiptext">
-            Compound: {{ message.compound }}
-            Positive: {{ message.pos_score }}
-            Neutral: {{ message.neu_score }}
-            Negative: {{ message.neg_score }}
+            Compound: {{ (message.compound)|round(2) }}
+            Positive: {{ (message.pos_score)|round(2) }}
+            Neutral: {{ (message.neu_score)|round(2) }}
+            Negative: {{ (message.neg_score)|round(2) }}
         </span>        
       </div>
       {% endif %}
@@ -108,6 +108,12 @@
     </section>
   </form>
 </div>
+
+<script>
+  $(function() {
+  $(document).scrollTop($(document).height()); 
+  });
+</script>
 
 </body>
 </html>

@@ -4,6 +4,57 @@ This Flask API I developed serves as backend for a chat service that, besides al
 
 The cool tool of this API is that user is able to check on that analysis with just hovering the mouse over the specific message. This will display a tooltip with the compound data, a value ranging from 1 to -1, depending on how positive or negative is the message, among some other information.
 
+## Forms
+
+Each of the API's [froms](https://github.com/EduOporto/nlp-chat-api/blob/main/rest_api/forms/forms.py) (Sign and Log In, Group tasks or Messages) have been created and implemented with ['Flask_WTForms'](https://flask-wtf.readthedocs.io/en/stable/) library, which helps out with the validation tasks and the alerts.
+
+![form](img/form.gif)
+
+## End Points and templates
+
+This API has 10 different [endpoints](https://github.com/EduOporto/nlp-chat-api/tree/main/rest_api/endpoints), rendered in eight different HTML templates. The latter have a really simple design, as this is the first project in which I use [HTML](https://github.com/EduOporto/nlp-chat-api/tree/main/rest_api/templates), [CSS](https://github.com/EduOporto/nlp-chat-api/tree/main/rest_api/static/styles) and [JavaScript](https://github.com/EduOporto/nlp-chat-api/tree/main/rest_api/static/js) code. As simple the design is, it also makes the the user experience easier.
+
+Besides the login/logout and sign in endpoints, and the user's home page, which are similar to the typical ones that could be seen in any other API, I would like to explain the endpoints for any given chat or group.
+
+As the user is logged in, the Home endpoint is opened, with just a topbar where, from left to right, can be seen: 
+
+ - The user's name, in green, which is static in every endpoint and gives access to this very page when clicked.
+ - The links for the Chats/Groups menus.
+ - The Logout button, on the far right.
+
+This topbar will be fixed for each of the menus.
+
+![top_bar](img/top_bar.png)
+
+### Chats menu
+
+It will add to the top bar the name of the chat's other user, in green, and show a side navigation bar with two sub-menus: New Chat, with a search-bar dropdown menu that shows all the registered users; and Chats, with the list of the opened chats. When a user for a new chat or an available chat is selected/clicked, the Chat menu is opened. This will deploy the message box and the 'Send' button on the first case; and also the already exchanged messages in the second. 
+
+![chats_menu](img/chats_menu.gif)
+
+### Groups menu
+
+It also adds the name of the group to the top bar, which in this case is clickable. It will deploy a new side navigation bar with the groups options. In case the user is the group's administrator, it will first show the list of the users included in the group (clicking on them will directly open a chat with that user); then the option to add a new user/s to the group, and also the option for removing a user/s. In case the user is not the group's admin, it will show just the list of users and the button to exit the group.
+
+The permanent side navigation bar will have a sub-menu for creating a New Group, giving a form for the name of the group, a dropdown menu with multiple selection, giving the option of choosing more than one user at a time, and the button to create the group. Below that menu is the Groups menu, listing the groups in which the user is has been included.
+
+![groups_menu](img/groups_menu.gif)
+
+## Messages and [NLTK-Vader Sentiment Analysis](https://www.nltk.org/_modules/nltk/sentiment/vader.html)
+
+The messages will be shown in order, from most recent at the bottom of the scroll bar, to oldest at the top. Every chat/group will be charged from the bottom of the scroll bar. 
+
+The dates of the messages will be shown in separators, as a container with a green background, once per date. The messages will include the name of the sender in case of the groups, the text and the time in which it was sent right below. If the user hovers the cursor over a message, a tooltip will be deployed with information about the sentiment analysis of the chosen message. It will have five parts:
+
+ - The compound mark: measures the positivity or negativity of a message with a value comprehended between -1 (Negative) and 1 (Positive). There is a [really good explaination](https://stackoverflow.com/a/40337646) on how the model calculates this mark on StackOverflow.
+ - The Tooltip's background: it will vary over 201 distinct color tones from red (-1/Negative) to green (1/positive), passing through yellow (0/neutral), depending on the compound value of the message, rounded to two decimals.
+
+![gradient](img/color_gradient.png)
+
+ - Positive, neutral and negative values: the values the model assigns to the message. It is a percentage of those three characteristics. 
+
+![nlp_ex](img/nlp_ex.gif)
+
 ## [Security](https://github.com/EduOporto/nlp-chat-api/blob/main/hasher/hasher.py)
 
 The user's data is well protected on this API, as some personal data such as name, lastname, email and, of course, password are hashed in the moment of the registration. 
@@ -44,43 +95,45 @@ Given the latter, the SQL schema for this particular database has five different
 
  Both classes have just a function, 'compound_color', which returns the assigned color for the resultant compound value of the message's sentiment analysis. I will explain this color-gradient below.
 
-## Forms
+## Running the API
 
-Each of the API's [froms](https://github.com/EduOporto/nlp-chat-api/blob/main/rest_api/forms/forms.py) (Sign and Log In, Group tasks or Messages) have been created and implemented with ['Flask_WTForms'](https://flask-wtf.readthedocs.io/en/stable/) library, which helps out with the validation tasks and the alerts.
+### .env credentials
 
-## End Points and templates
+This API has been created just for learning/fun purposes. In case you would like to use it or improve it, the first step would be create a '.env' file on the root directory, which should include a variable with your local SQL Pass under the name 'MySQLPass', and another variable for the Flask app.secret_key, under the name 'flask_session'. The latter could be any string you like.
 
-This API has 10 different [endpoints](https://github.com/EduOporto/nlp-chat-api/tree/main/rest_api/endpoints), rendered in eight different HTML templates. The latter have a really simple design, as this is the first project in which I use [HTML](https://github.com/EduOporto/nlp-chat-api/tree/main/rest_api/templates), [CSS](https://github.com/EduOporto/nlp-chat-api/tree/main/rest_api/static/styles) and [JavaScript](https://github.com/EduOporto/nlp-chat-api/tree/main/rest_api/static/js) code. As simple the design is, it also makes the the user experience easier.
+        MySQLPass='YourLocalSQLPass'
+        flask_session = 'AnyStringForFlaskApp'
 
-Besides the login/logout and sign in endpoints, and the user's home page, which are similar to the typical ones that could be seen in any other API, I would like to explain the endpoints for any given chat or group.
+### SQL DB Creation
 
-As the user is logged in, the Home endpoint is opened, with just a topbar where, from left to right, can be seen: 
+Once the '.env' file has been created, it is time to create the SQL Database. In order to do so you just have to navigate to the folder route you place the nlp-chat-api directory through the terminal and start a python3 session. In the session, just type:
 
- - The user's name, in green, which is static in every endpoint and gives access to this very page when clicked.
- - The links for the Chats/Groups menus.
- - The Logout button, on the far right.
+        from sql_db.db_creator.db_creator import db_creator
+        from rest_api.app import db
+        db_creator('nlp_chat_api', db)
 
-This topbar will be fixed for each of the menus.
+If succesful, this process will return:
 
-### Chats menu
+![db_creator](img/db_creation.png)
 
-It will add to the top bar the name of the chat's other user, in green, and show a side navigation bar with two sub-menus: New Chat, with a search-bar dropdown menu that shows all the registered users; and Chats, with the list of the opened chats. When a user for a new chat or an available chat is selected/clicked, the Chat menu is opened. This will deploy the message box and the 'Send' button on the first case; and also the already exchanged messages in the second. 
+You can also drop the database whenever you like, using the following:
 
-### Groups menu
+        from sql_db.db_creator.db_creator import db_dropper
+        db_dropper('nlp_chat_api')
 
-It also adds the name of the group to the top bar, which in this case is clickable. It will deploy a new side navigation bar with the groups options. In case the user is the group's administrator, it will first show the list of the users included in the group (clicking on them will directly open a chat with that user); then the option to add a new user/s to the group, and also the option for removing a user/s. In case the user is not the group's admin, it will show just the list of users and the button to exit the group.
+### Flask Run
 
-The permanent side navigation bar will have a sub-menu for creating a New Group, giving a form for the name of the group, a dropdown menu with multiple selection, giving the option of choosing more than one user at a time, and the button to create the group. Below that menu is the Groups menu, listing the groups in which the user is has been included.
+In a new terminal tab, navigate the projects directory and once there, run the following lines:
 
-## Messages and [NLTK-Vader Sentiment Analysis](https://www.nltk.org/_modules/nltk/sentiment/vader.html)
+        export FLASK_ENV=development
+        export FLASK_APP=main.py
+        flask run
 
-The messages will be shown in order, from most recent at the bottom of the scroll bar, to oldest at the top. Every chat/group will be charged from the bottom of the scroll bar. 
+This will show the following messages:
 
-The dates of the messages will be shown in separators, as a container with a green background, once per date. The messages will include the name of the sender in case of the groups, the text and the time in which it was sent right below. If the user hovers the cursor over a message, a tooltip will be deployed with information about the sentiment analysis of the chosen message. It will have five parts:
+![flask_run](img/flask_run.png)
 
- - The compound mark: measures the positivity or negativity of a message with a value comprehended between -1 (Negative) and 1 (Positive). There is a [really good explaination](https://stackoverflow.com/a/40337646) on how the model calculates this mark on StackOverflow.
- - The Tooltip's background: it will vary over 201 distinct color tones from red (-1/Negative) to green (1/positive), passing through yellow (0/neutral), depending on the compound value of the message, rounded to two decimals.
- - Positive, neutral and negative values: the values the model assigns to the message. It is a percentage of those three characteristics. 
+Click on the address with CTRL/CMD pressed and it will drive you to the LogIn page. From there you can create users, log in and, definitely use the API.
 
 # Further improvements
 

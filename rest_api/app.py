@@ -33,7 +33,10 @@ from rest_api.models.group import Group
 from rest_api.models.messages import Cmessage, Gmessage
 
 # Import forms
-from rest_api.forms.forms import SignIn, LogIn, NewGroup, AddUser, RemoveUser, NewMessage, ExitGroup
+try:
+    from rest_api.forms.forms import SignIn, LogIn, NewGroup, AddUser, RemoveUser, NewMessage, ExitGroup
+except:
+    pass
 
 # Import NLTK-Vader Sentiment Analysis and instanciate it 
 from nltk.sentiment.vader import SentimentIntensityAnalyzer
